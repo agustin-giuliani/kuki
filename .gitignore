@@ -1,0 +1,38 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Memoria personal de KUKI
+data/memory.json
+
+
+# Variables de entorno / archivos personales
+.env
+*.env
+
+# Logs
+*.log
+
+# Visual Studio / IDE
+.vs/
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Tests/cache
+.pytest_cache/
+.mypy_cache/
+
+# Archivos temporales
+*.tmp
+*.temp
+
