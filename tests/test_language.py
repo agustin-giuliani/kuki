@@ -16,7 +16,11 @@ frases = [
     "Mi color favorito es negro",
     "Python es un lenguaje de programacion",
     "Que es Python?",
-    "Para que sirve Python?"
+    "Para que sirve Python?",
+    "Quiero consultar internet",
+    "Necesito internet",
+    "Busca en internet",
+    "Consulta internet"
 ]
 
 for frase in frases:

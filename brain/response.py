@@ -87,4 +87,36 @@ class ResponseGenerator:
                 + "."
             )
 
+        elif intencion == "usar_herramienta":
+
+            if datos.get("herramienta_no_encontrada"):
+
+                return "No encuentro una herramienta adecuada para eso."
+
+            if datos.get("permiso_denegado"):
+
+                herramienta = datos.get("herramienta")
+
+                if herramienta:
+
+                    return (
+                        "Necesito utilizar la herramienta "
+                        + herramienta
+                        + ", pero no tengo permiso para utilizarla."
+                    )
+
+                return "No tengo permiso para utilizar esa herramienta."
+
+            herramienta = datos.get("herramienta")
+
+            if herramienta:
+
+                return (
+                    "La herramienta "
+                    + herramienta
+                    + " esta disponible."
+                )
+
+            return "No pude determinar que herramienta necesito."
+
         return "No entiendo esa intencion."

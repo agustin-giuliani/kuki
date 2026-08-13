@@ -82,6 +82,10 @@ class Kuki:
 
         self.contexto.actualizar_tema(resultado)
 
+        herramienta = self.tools.seleccionar(entrada)
+
+        datos = {}
+
         respuesta = None
 
         # 2. Aprendizaje de memoria personal
@@ -104,18 +108,49 @@ class Kuki:
             else:
                 respuesta = "No pude aprender eso."
 
+        elif intencion == "usar_herramienta":
+
+            resultado_tool = self.tools.ejecutar_seleccion(
+                entrada
+            )
+
+            datos["herramienta"] = resultado_tool.get(
+                "herramienta"
+            )
+
+            datos["resultado_tool"] = resultado_tool
+
+            if resultado_tool["estado"] == "herramienta_no_encontrada":
+
+                datos["herramienta_no_encontrada"] = True
+
+            elif resultado_tool["estado"] == "permiso_denegado":
+
+                datos["permiso_denegado"] = True
+
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
+
         # 4. Preparar datos para la respuesta
         else:
 
-            datos = {}
-
             if intencion == "hora":
 
-                resultado_tool = self.tools.ejecutar("hora")
+                if herramienta == "hora":
 
-                if resultado_tool["estado"] == "ok":
+                    resultado_tool = self.tools.ejecutar(
+                        herramienta
+                    )
 
-                    datos["hora"] = resultado_tool["resultado"]
+                    if resultado_tool["estado"] == "ok":
+
+                        datos["hora"] = resultado_tool["resultado"]
+
+                    else:
+
+                        datos["permiso_denegado"] = True
 
                 else:
 

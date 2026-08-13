@@ -141,6 +141,23 @@ class LanguageProcessor:
                     "texto": texto
                 }
 
+        # -------------------------
+        # USO DE HERRAMIENTAS
+        # -------------------------
+
+        if (
+            "quiero consultar internet" in texto
+            or "necesito internet" in texto
+            or "usa internet" in texto
+            or "usar internet" in texto
+            or "busca en internet" in texto
+            or "consultar internet" in texto
+            or "consulta internet" in texto
+        ):
+            return {
+                "intencion": "usar_herramienta",
+                "texto": texto
+            }
 
         # -------------------------
         # DESCONOCIDO

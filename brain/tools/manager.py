@@ -2,6 +2,8 @@ from brain.tools.registry import ToolRegistry
 from brain.tools.permissions import PermissionManager
 from brain.tools.executor import ToolExecutor
 from brain.tools.basic import obtener_hora
+from brain.tools.catalog import ToolCatalog
+from brain.tools.selector import ToolSelector
 
 
 class ToolManager:
@@ -12,6 +14,15 @@ class ToolManager:
         self.permissions = PermissionManager()
 
         self._registrar_herramientas()
+
+        self.catalogo = ToolCatalog(
+            self.registry,
+            self.permissions
+        )
+
+        self.selector = ToolSelector(
+            self.catalogo
+        )
 
         self.executor = ToolExecutor(
             self.registry,
@@ -31,6 +42,17 @@ class ToolManager:
             "seguro",
             True
         )
+        self.registry.registrar(
+            "internet",
+            None,
+            "Permite consultar informacion en Internet."
+        )
+
+        self.permissions.registrar(
+            "internet",
+            "autorizacion",
+            False
+        )
 
     def ejecutar(self, nombre, *args, **kwargs):
 
@@ -43,3 +65,36 @@ class ToolManager:
     def listar(self):
 
         return self.registry.listar()
+        
+    def obtener_info(self, nombre):
+
+        return self.catalogo.obtener(nombre)
+
+    def listar_detallado(self):
+
+        return self.catalogo.listar()
+
+    def seleccionar(self, texto):
+
+        return self.selector.seleccionar(texto)
+
+    def ejecutar_seleccion(self, texto, *args, **kwargs):
+
+        herramienta = self.seleccionar(texto)
+
+        if herramienta is None:
+
+            return {
+                "estado": "herramienta_no_encontrada",
+                "herramienta": None
+            }
+
+        resultado = self.ejecutar(
+            herramienta,
+            *args,
+            **kwargs
+        )
+
+        resultado["herramienta"] = herramienta
+
+        return resultado
