@@ -12,7 +12,11 @@ frases = [
     "Como estas",
     "Cual es tu nombre",
     "Que hora es",
-    "Cual es mi comida favorita?"
+    "Cual es mi comida favorita?",
+    "Mi color favorito es negro",
+    "Python es un lenguaje de programacion",
+    "Que es Python?",
+    "Para que sirve Python?"
 ]
 
 for frase in frases:
@@ -23,3 +27,8 @@ for frase in frases:
         "Entrada:", frase,
         "| Intencion:", resultado["intencion"]
     )
+
+print(
+    "Entrada: Y para que sirve? | Intencion:",
+    lenguaje.procesar("Y para que sirve?")["intencion"]
+)

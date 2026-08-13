@@ -1,32 +1,60 @@
+from brain.knowledge import Knowledge
+
+
 class Learning:
 
-    def __init__(self, memoria):
+    def __init__(self, memoria, conocimiento):
         self.memoria = memoria
+        self.conocimiento = conocimiento
 
     def aprender_frase(self, texto):
 
         texto = texto.lower().strip()
 
-        if not texto.startswith("mi "):
-            return False
+        # No aprender preguntas
+        if texto.startswith("que es "):
+            return None
+
+        if texto.startswith("cual es "):
+            return None
+
+        # Aprender nombre
+        if texto.startswith("me llamo "):
+
+            nombre = texto[9:].strip()
+
+            if nombre:
+                self.memoria.guardar("nombre", nombre)
+                return "memoria"
 
         if " es " not in texto:
-            return False
+            return None
 
-        contenido = texto[3:]
-
-        clave, valor = contenido.split(" es ", 1)
+        clave, valor = texto.split(" es ", 1)
 
         clave = clave.strip()
         valor = valor.strip().rstrip(".")
 
         if not clave or not valor:
-            return False
+            return None
 
-        # Evitamos guardar preguntas como si fueran conocimientos
-        if clave.startswith("cual"):
-            return False
+        # Informacion personal
+        if texto.startswith("mi "):
 
-        self.memoria.guardar(clave, valor)
+            clave = clave[3:].strip()
 
-        return True
+            if clave.startswith("cual"):
+                return None
+
+            self.memoria.guardar(clave, valor)
+
+            return "memoria"
+
+        # Conocimiento general
+        self.conocimiento.guardar(
+            clave,
+            valor,
+            "descripcion"
+        )
+
+        return "conocimiento"

@@ -10,7 +10,8 @@ __pycache__/
 
 # Memoria personal de KUKI
 data/memory.json
-
+data/knowledge.json
+data/conversation.json
 
 # Variables de entorno / archivos personales
 .env
@@ -36,3 +37,11 @@ Thumbs.db
 *.tmp
 *.temp
 
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos generados por herramientas
+*.bak
+*.old

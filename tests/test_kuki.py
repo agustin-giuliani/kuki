@@ -47,3 +47,15 @@ print("KUKI:", kuki.responder("Mi comida favorita es la pizza"))
 
 print("Usuario: Cual es mi comida favorita?")
 print("KUKI:", kuki.responder("Cual es mi comida favorita?"))
+
+print()
+print("--- CONTEXTO RECIENTE ---")
+
+contexto = kuki.obtener_contexto(4)
+
+for mensaje in contexto:
+
+    print(
+        mensaje["rol"] + ":",
+        mensaje["mensaje"]
+    )

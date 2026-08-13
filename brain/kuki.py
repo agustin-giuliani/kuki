@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import json
-from datetime import datetime
 
+from brain.response import ResponseGenerator
+from brain.knowledge import Knowledge
 from brain.learning import Learning
 from brain.neuron import Neuron
 from brain.memory import Memory
 from brain.language import LanguageProcessor
+from brain.conversation import Conversation
+from brain.context import ContextManager
+from brain.tools.manager import ToolManager
 
 
 
@@ -15,8 +19,18 @@ class Kuki:
     def __init__(self):
         self.neurona = Neuron()
         self.memoria = Memory()
-        self.aprendizaje = Learning(self.memoria)
+        self.conocimiento = Knowledge()
+        self.aprendizaje = Learning(
+                self.memoria,
+                self.conocimiento
+        )
+
         self.lenguaje = LanguageProcessor()
+        self.respuestas = ResponseGenerator()
+        self.conversacion = Conversation()
+        self.contexto = ContextManager(self.conversacion)
+
+        self.tools = ToolManager()
 
         self.cargar_modelo()
 
@@ -52,40 +66,109 @@ class Kuki:
 
         return self.memoria.recordar(clave)
 
+    def obtener_contexto(self, cantidad=10):
+
+        return self.conversacion.obtener_recientes(cantidad)
+
     def responder(self, entrada):
 
-        # Primero intentamos aprender algo nuevo
-        aprendio = self.aprendizaje.aprender_frase(entrada)
+        # Guardamos el mensaje del usuario
+        self.conversacion.guardar("usuario", entrada)
 
-        if aprendio:
-            return "Lo recordare."
-
-        # Si no aprendio nada, procesamos la intencion
+        # 1. Entender primero
         resultado = self.lenguaje.procesar(entrada)
+
         intencion = resultado["intencion"]
 
-        if intencion == "saludo":
-            return "Hola Agustin. Como estas?"
+        self.contexto.actualizar_tema(resultado)
 
-        elif intencion == "estado":
-            return "Estoy funcionando correctamente."
+        respuesta = None
 
-        elif intencion == "nombre":
-            return "Mi nombre es KUKI."
+        # 2. Aprendizaje de memoria personal
+        if intencion == "aprendizaje_memoria":
 
-        elif intencion == "hora":
-            hora_actual = datetime.now().strftime("%H:%M")
-            return "Son las " + hora_actual
+            tipo = self.aprendizaje.aprender_frase(entrada)
 
-        elif intencion == "recordar":
+            if tipo == "memoria":
+                respuesta = "Lo recordare."
+            else:
+                respuesta = "No pude aprender eso."
 
-            clave = resultado["clave"]
-            valor = self.memoria.recordar(clave)
+        # 3. Aprendizaje de conocimiento
+        elif intencion == "aprendizaje_conocimiento":
 
-            if valor is not None:
-                return "Tu " + clave + " es " + valor + "."
+            tipo = self.aprendizaje.aprender_frase(entrada)
 
-            return "No recuerdo eso todavia."
+            if tipo == "conocimiento":
+                respuesta = "Lo aprendere."
+            else:
+                respuesta = "No pude aprender eso."
 
+        # 4. Preparar datos para la respuesta
         else:
-            return "Todavia no se como responder a eso."
+
+            datos = {}
+
+            if intencion == "hora":
+
+                resultado_tool = self.tools.ejecutar("hora")
+
+                if resultado_tool["estado"] == "ok":
+
+                    datos["hora"] = resultado_tool["resultado"]
+
+                else:
+
+                    datos["permiso_denegado"] = True
+
+            elif intencion == "identidad_usuario":
+
+                datos["nombre"] = self.memoria.recordar("nombre")
+
+            elif intencion == "recordar":
+
+                clave = resultado["clave"]
+
+                datos["clave"] = clave
+                datos["valor"] = self.memoria.recordar(clave)
+
+            elif intencion == "conocimiento":
+
+                clave = resultado["clave"]
+                categoria = resultado.get("categoria", "descripcion")
+
+                datos["clave"] = clave
+                datos["categoria"] = categoria
+                datos["valor"] = self.conocimiento.recordar(
+                    clave,
+                    categoria
+                )
+
+            elif intencion == "pregunta_contextual":
+
+                tema = self.contexto.obtener_tema()
+
+                datos["tema"] = tema
+                datos["categoria"] = "usos"
+
+                if tema is not None:
+                    datos["valor"] = self.conocimiento.recordar(
+                        tema,
+                        "usos"
+                    )
+
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
+
+        # --------------------------------
+        # GUARDAR RESPUESTA
+        # --------------------------------
+
+        self.conversacion.guardar(
+            "kuki",
+            respuesta
+        )
+
+        return respuesta
