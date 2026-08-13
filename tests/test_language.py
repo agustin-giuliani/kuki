@@ -11,7 +11,8 @@ frases = [
     "Buenas",
     "Como estas",
     "Cual es tu nombre",
-    "Que hora es"
+    "Que hora es",
+    "Cual es mi comida favorita?"
 ]
 
 for frase in frases:

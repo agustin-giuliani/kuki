@@ -35,6 +35,18 @@ class LanguageProcessor:
                 "texto": texto
             }
 
+        
+        # Preguntas para recuperar informacion de la memoria
+        if "cual es mi " in texto:
+            clave = texto.split("cual es mi ", 1)[1]
+            clave = clave.strip().rstrip("?")
+
+            return {
+                "intencion": "recordar",
+                "clave": clave,
+                "texto": texto
+            }
+
         return {
             "intencion": "desconocida",
             "texto": texto

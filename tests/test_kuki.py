@@ -41,3 +41,9 @@ print("KUKI:", kuki.responder("Cual es tu nombre"))
 
 print("Usuario: Que hora es")
 print("KUKI:", kuki.responder("Que hora es"))
+
+print("Usuario: Mi comida favorita es la pizza")
+print("KUKI:", kuki.responder("Mi comida favorita es la pizza"))
+
+print("Usuario: Cual es mi comida favorita?")
+print("KUKI:", kuki.responder("Cual es mi comida favorita?"))

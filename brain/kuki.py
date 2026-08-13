@@ -3,6 +3,7 @@
 import json
 from datetime import datetime
 
+from brain.learning import Learning
 from brain.neuron import Neuron
 from brain.memory import Memory
 from brain.language import LanguageProcessor
@@ -14,6 +15,7 @@ class Kuki:
     def __init__(self):
         self.neurona = Neuron()
         self.memoria = Memory()
+        self.aprendizaje = Learning(self.memoria)
         self.lenguaje = LanguageProcessor()
 
         self.cargar_modelo()
@@ -51,6 +53,14 @@ class Kuki:
         return self.memoria.recordar(clave)
 
     def responder(self, entrada):
+
+        # Primero intentamos aprender algo nuevo
+        aprendio = self.aprendizaje.aprender_frase(entrada)
+
+        if aprendio:
+            return "Lo recordare."
+
+        # Si no aprendio nada, procesamos la intencion
         resultado = self.lenguaje.procesar(entrada)
         intencion = resultado["intencion"]
 
@@ -63,9 +73,19 @@ class Kuki:
         elif intencion == "nombre":
             return "Mi nombre es KUKI."
 
-        if intencion == "hora":
-          hora_actual = datetime.now().strftime("%H:%M")
-          return "Son las " + hora_actual
+        elif intencion == "hora":
+            hora_actual = datetime.now().strftime("%H:%M")
+            return "Son las " + hora_actual
+
+        elif intencion == "recordar":
+
+            clave = resultado["clave"]
+            valor = self.memoria.recordar(clave)
+
+            if valor is not None:
+                return "Tu " + clave + " es " + valor + "."
+
+            return "No recuerdo eso todavia."
 
         else:
             return "Todavia no se como responder a eso."
