@@ -5,6 +5,8 @@ from brain.tools.basic import obtener_hora
 from brain.tools.catalog import ToolCatalog
 from brain.tools.selector import ToolSelector
 from brain.tools.authorization import AuthorizationManager
+from brain.tools.authorization_planner import AuthorizationPlanner
+from brain.tools.authorization_executor import AuthorizationExecutor
 from brain.tools.internet import (
     consultar_internet,
     buscar_internet
@@ -31,6 +33,14 @@ class ToolManager:
 
         self.selector = ToolSelector(
             self.catalogo
+        )
+
+        self.planificador_autorizacion = AuthorizationPlanner(
+            self.selector
+        )
+
+        self.autorizacion_executor = AuthorizationExecutor(
+            self.autorizacion
         )
 
         self.executor = ToolExecutor(
@@ -166,3 +176,18 @@ class ToolManager:
         resultado["herramienta"] = herramienta
 
         return resultado
+
+    def ejecutar_autorizacion(self, resultado_lenguaje):
+
+        plan = self.planificador_autorizacion.planificar(
+            resultado_lenguaje
+        )
+
+        resultado = self.autorizacion_executor.ejecutar(
+            plan
+        )
+
+        return {
+            "plan": plan,
+            "resultado": resultado
+        }

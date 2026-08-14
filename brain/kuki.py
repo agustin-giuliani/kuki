@@ -177,57 +177,31 @@ class Kuki:
             )
 
         # --------------------------------
-        # AUTORIZAR HERRAMIENTA
+        # AUTORIZAR/rechazar HERRAMIENTA
         # --------------------------------
 
-        elif intencion == "autorizar_herramienta":
+        elif intencion in (
+            "autorizar_herramienta",
+            "rechazar_herramienta"
+        ):
 
-            herramienta = self.tools.seleccionar(
-                entrada
+            resultado_autorizacion = self.tools.ejecutar_autorizacion(
+                resultado
             )
 
-            datos["herramienta"] = herramienta
+            plan_autorizacion = resultado_autorizacion["plan"]
 
-            if herramienta is None:
+            resultado = resultado_autorizacion["resultado"]
+
+            datos["herramienta"] = plan_autorizacion.get(
+                "herramienta"
+            )
+
+            datos["resultado_autorizacion"] = resultado
+
+            if datos["herramienta"] is None:
 
                 datos["herramienta_no_encontrada"] = True
-
-            else:
-
-                resultado = self.tools.aprobar_permiso(
-                    herramienta
-                )
-
-                datos["resultado_autorizacion"] = resultado
-
-            respuesta = self.respuestas.generar(
-                intencion,
-                datos
-            )
-
-        # --------------------------------
-        # RECHAZAR HERRAMIENTA
-        # --------------------------------
-
-        elif intencion == "rechazar_herramienta":
-
-            herramienta = self.tools.seleccionar(
-                entrada
-            )
-
-            datos["herramienta"] = herramienta
-
-            if herramienta is None:
-
-                datos["herramienta_no_encontrada"] = True
-
-            else:
-
-                resultado = self.tools.rechazar_permiso(
-                    herramienta
-                )
-
-                datos["resultado_autorizacion"] = resultado
 
             respuesta = self.respuestas.generar(
                 intencion,

@@ -56,3 +56,4 @@ resultado = tools.ejecutar_seleccion(
 print(resultado)
 
 print(resultado)
+
