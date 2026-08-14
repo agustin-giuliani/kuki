@@ -193,6 +193,23 @@ class LanguageProcessor:
                     "texto": texto
                 }
 
+        # -------------------------
+        # CONSULTA DE PERMISOS
+        # -------------------------
+
+        if (
+            "que herramientas tenes" in texto
+            or "que herramientas tienes" in texto
+            or "que herramientas estan habilitadas" in texto
+            or "que permisos tenes" in texto
+            or "cuales son tus permisos" in texto
+        ):
+            return {
+                "intencion": "consultar_permisos",
+                "texto": texto
+            }  
+
+
 
         # -------------------------
         # AUTORIZACION DE HERRAMIENTAS

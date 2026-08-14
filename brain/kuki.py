@@ -208,6 +208,15 @@ class Kuki:
                 intencion,
                 datos
             )
+        
+        elif intencion == "consultar_permisos":
+
+            datos["herramientas"] = self.tools.obtener_herramientas()
+
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
 
         # --------------------------------
         # OTRAS INTENCIONES

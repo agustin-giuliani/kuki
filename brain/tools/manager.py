@@ -191,3 +191,11 @@ class ToolManager:
             "plan": plan,
             "resultado": resultado
         }
+
+    def obtener_permisos(self):
+
+        return self.permissions.listar()
+
+    def obtener_herramientas(self):
+
+        return self.catalogo.listar()

@@ -57,3 +57,16 @@ print(resultado)
 
 print(resultado)
 
+print()
+print("--- PERMISOS ---")
+
+print(
+    tools.obtener_permisos()
+)
+
+print()
+print("--- HERRAMIENTAS DETALLADAS ---")
+
+for herramienta in tools.obtener_herramientas():
+
+    print(herramienta)

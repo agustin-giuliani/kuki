@@ -95,3 +95,31 @@ print(
         "Revoca internet"
     )["intencion"]
 )
+
+print(
+    "Que herramientas tenes ->",
+    lenguaje.procesar(
+        "Que herramientas tenes"
+    )["intencion"]
+)
+
+print(
+    "Que permisos tenes ->",
+    lenguaje.procesar(
+        "Que permisos tenes"
+    )["intencion"]
+)
+
+print(
+    "Que herramientas estan habilitadas ->",
+    lenguaje.procesar(
+        "Que herramientas estan habilitadas"
+    )["intencion"]
+)
+
+print(
+    "Cuales son tus permisos ->",
+    lenguaje.procesar(
+        "Cuales son tus permisos"
+    )["intencion"]
+)

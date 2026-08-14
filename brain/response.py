@@ -371,4 +371,51 @@ class ResponseGenerator:
                 + "."
             )
 
+
+        elif intencion == "consultar_permisos":
+
+            herramientas = datos.get("herramientas")
+
+            if herramientas is None:
+
+                return "No pude consultar mis herramientas."
+
+            if not herramientas:
+
+                return "No tengo herramientas registradas."
+
+            respuesta = (
+                "Tengo "
+                + str(len(herramientas))
+                + " herramientas registradas:"
+            )
+
+            for herramienta in herramientas:
+
+                nombre = herramienta["nombre"]
+                descripcion = herramienta["descripcion"]
+                nivel = herramienta["nivel"]
+
+                permitido = herramienta["permitido"]
+
+                if permitido:
+                    estado = "habilitada"
+                else:
+                    estado = "restringida"
+
+                respuesta += (
+                    "\n- "
+                    + nombre
+                    + ": "
+                    + descripcion
+                    + " Nivel: "
+                    + nivel
+                    + ". Estado: "
+                    + estado
+                    + "."
+                )
+
+            return respuesta
+
+
         return "No entiendo esa intencion."
