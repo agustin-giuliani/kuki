@@ -3,11 +3,21 @@ class ToolRegistry:
     def __init__(self):
         self.herramientas = {}
 
-    def registrar(self, nombre, funcion, descripcion=""):
+    def registrar(
+        self,
+        nombre,
+        funcion,
+        descripcion="",
+        capacidades=None
+    ):
+
+        if capacidades is None:
+            capacidades = []
 
         self.herramientas[nombre] = {
             "funcion": funcion,
-            "descripcion": descripcion
+            "descripcion": descripcion,
+            "capacidades": capacidades
         }
 
     def existe(self, nombre):

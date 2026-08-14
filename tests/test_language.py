@@ -123,3 +123,21 @@ print(
         "Cuales son tus permisos"
     )["intencion"]
 )
+
+pruebas = [
+    "BUSCA INFORMACION SOBRE PYTHON!!!!!!",
+    "QUE HORA ES???",
+    "HOLA KUKI!!!!!"
+]
+
+
+print("--- NORMALIZACION + LENGUAJE ---")
+
+
+for texto in pruebas:
+
+    resultado = lenguaje.procesar(texto)
+
+    print()
+    print("Entrada:", texto)
+    print("Resultado:", resultado)

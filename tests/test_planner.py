@@ -7,6 +7,7 @@ tools = ToolManager()
 lenguaje = LanguageProcessor()
 
 planner = ToolPlanner(
+    tools.catalogo,
     tools.selector
 )
 

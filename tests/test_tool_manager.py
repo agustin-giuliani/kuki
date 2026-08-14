@@ -70,3 +70,14 @@ print("--- HERRAMIENTAS DETALLADAS ---")
 for herramienta in tools.obtener_herramientas():
 
     print(herramienta)
+
+print()
+print("--- CAPACIDADES ---")
+
+for herramienta in tools.obtener_herramientas():
+
+    print(
+        herramienta["nombre"],
+        "->",
+        herramienta["capacidades"]
+    )

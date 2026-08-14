@@ -1,8 +1,22 @@
+# -*- coding: utf-8 -*-
+
+from brain.normalizer import TextNormalizer
+
+
 class LanguageProcessor:
+
+    def __init__(self, normalizador=None):
+
+        if normalizador is None:
+            normalizador = TextNormalizer()
+
+        self.normalizador = normalizador
 
     def procesar(self, texto):
 
-        texto = texto.lower().strip()
+        texto = self.normalizador.normalizar(
+            texto
+        )
 
         if texto == "":
             return {

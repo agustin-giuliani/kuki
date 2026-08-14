@@ -53,7 +53,8 @@ class ToolManager:
         self.registry.registrar(
             "hora",
             obtener_hora,
-            "Obtiene la hora actual."
+            "Obtiene la hora actual.",
+            ["hora"]
         )
 
         self.permissions.registrar(
@@ -64,7 +65,11 @@ class ToolManager:
         self.registry.registrar(
             "internet",
             buscar_internet,
-            "Permite buscar informacion en Internet."
+            "Permite buscar informacion en Internet.",
+            [
+                "buscar_internet",
+                "usar_herramienta"
+            ]
         )
 
         self.permissions.registrar(

@@ -22,8 +22,8 @@ class Kuki:
         self.memoria = Memory()
         self.conocimiento = Knowledge()
         self.aprendizaje = Learning(
-                self.memoria,
-                self.conocimiento
+            self.memoria,
+            self.conocimiento
         )
 
         self.lenguaje = LanguageProcessor()
@@ -34,6 +34,7 @@ class Kuki:
         self.tools = ToolManager()
 
         self.planificador = ToolPlanner(
+            self.tools.catalogo,
             self.tools.selector
         )
 

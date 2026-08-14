@@ -15,6 +15,10 @@ class ToolCatalog:
         return {
             "nombre": nombre,
             "descripcion": herramienta["descripcion"],
+            "capacidades": herramienta.get(
+                "capacidades",
+                []
+            ),
             "nivel": self.permissions.nivel(nombre),
             "permitido": self.permissions.tiene_permiso(nombre)
         }
@@ -31,3 +35,15 @@ class ToolCatalog:
                 herramientas.append(informacion)
 
         return herramientas
+
+    def buscar_por_capacidad(self, capacidad):
+
+        herramientas = self.listar()
+
+        for herramienta in herramientas:
+
+            if capacidad in herramienta["capacidades"]:
+
+                return herramienta["nombre"]
+
+        return None
