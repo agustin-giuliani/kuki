@@ -182,7 +182,8 @@ class Kuki:
 
         elif intencion in (
             "autorizar_herramienta",
-            "rechazar_herramienta"
+            "rechazar_herramienta",
+            "revocar_herramienta"
         ):
 
             resultado_autorizacion = self.tools.ejecutar_autorizacion(

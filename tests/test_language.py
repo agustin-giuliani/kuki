@@ -74,3 +74,24 @@ print(
         "Investiga sobre Python"
     )
 )
+
+print(
+    "Revoco internet ->",
+    lenguaje.procesar(
+        "Revoco internet"
+    )["intencion"]
+)
+
+print(
+    "Revocar internet ->",
+    lenguaje.procesar(
+        "Revocar internet"
+    )["intencion"]
+)
+
+print(
+    "Revoca internet ->",
+    lenguaje.procesar(
+        "Revoca internet"
+    )["intencion"]
+)

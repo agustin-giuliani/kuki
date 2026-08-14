@@ -210,6 +210,17 @@ class LanguageProcessor:
             }
 
         if (
+        "revoco " in texto
+        or "revocar " in texto
+        or "revoca " in texto
+        ):
+
+            return {
+                "intencion": "revocar_herramienta",
+                "texto": texto
+            }
+
+        if (
             "rechazo " in texto
             or "deniego " in texto
             or "no permito " in texto

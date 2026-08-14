@@ -228,6 +228,49 @@ class ResponseGenerator:
 
             return "No pude procesar el rechazo."
 
+               
+        elif intencion == "revocar_herramienta":
+
+            if datos.get("herramienta_no_encontrada"):
+
+                return "No encuentro esa herramienta."
+
+            herramienta = datos.get("herramienta")
+            resultado = datos.get("resultado_autorizacion")
+
+            if resultado is None:
+
+                return "No pude procesar la revocacion."
+
+            estado = resultado.get("estado")
+
+            if estado == "revocada":
+
+                return (
+                    "Entendido. El permiso de "
+                    + herramienta
+                    + " fue revocado."
+                )
+
+            if estado == "ya_revocada":
+
+                return (
+                    "El permiso de "
+                    + herramienta
+                    + " ya estaba revocado."
+                )
+
+            if estado == "permiso_denegado":
+
+                return (
+                    "No puedo revocar el permiso de "
+                    + herramienta
+                    + ". Solo el usuario puede hacerlo."
+                )
+
+            return "No pude procesar la revocacion."
+
+
         elif intencion == "buscar_internet":
 
             consulta = datos.get("consulta")

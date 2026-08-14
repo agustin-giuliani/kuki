@@ -139,3 +139,46 @@ class AuthorizationManager:
             "estado": "rechazada",
             "herramienta": herramienta
         }
+
+    def revocar(self, herramienta, origen="usuario"):
+
+        if origen != "usuario":
+
+            return {
+                "estado": "permiso_denegado",
+                "mensaje": (
+                    "Solo el usuario puede revocar permisos."
+                ),
+                "herramienta": herramienta
+            }
+
+        if herramienta not in self.permissions.permisos:
+
+            return {
+                "estado": "herramienta_no_encontrada",
+                "herramienta": herramienta
+            }
+
+        if not self.permissions.tiene_permiso(herramienta):
+
+            return {
+                "estado": "ya_revocada",
+                "herramienta": herramienta
+            }
+
+        resultado = self.permissions.revocar(
+            herramienta,
+            origen="usuario"
+        )
+
+        if not resultado:
+
+            return {
+                "estado": "error",
+                "herramienta": herramienta
+            }
+
+        return {
+            "estado": "revocada",
+            "herramienta": herramienta
+        }

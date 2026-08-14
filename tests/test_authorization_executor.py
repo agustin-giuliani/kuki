@@ -74,6 +74,9 @@ print(
 )
 
 
+
+
+
 # --------------------------------
 # REVOCAR PARA DEJAR LIMPIO
 # --------------------------------
@@ -129,6 +132,34 @@ print(resultado)
 # --------------------------------
 # ESTADO FINAL
 # --------------------------------
+
+print()
+print("Estado final:")
+
+print(
+    tools.permissions.listar()
+)
+
+resultado_lenguaje = {
+    "intencion": "revocar_herramienta",
+    "texto": "revoco internet"
+}
+
+plan = planner.planificar(
+    resultado_lenguaje
+)
+
+print()
+print("Plan de revocacion:")
+print(plan)
+
+resultado = executor.ejecutar(
+    plan
+)
+
+print()
+print("Resultado de la revocacion:")
+print(resultado)
 
 print()
 print("Estado final:")

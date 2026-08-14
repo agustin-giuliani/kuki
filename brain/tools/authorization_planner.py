@@ -28,6 +28,19 @@ class AuthorizationPlanner:
                 "datos": {}
             }
 
+        if intencion == "revocar_herramienta":
+
+            herramienta = self.selector.seleccionar(
+                texto
+            )
+
+            return {
+                "necesita_autorizacion": True,
+                "accion": "revocar",
+                "herramienta": herramienta,
+                "datos": {}
+            }
+
         if intencion == "rechazar_herramienta":
 
             herramienta = self.selector.seleccionar(

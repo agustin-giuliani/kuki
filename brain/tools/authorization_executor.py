@@ -43,6 +43,14 @@ class AuthorizationExecutor:
                 origen=origen
             )
 
+        if accion == "revocar":
+
+            return self.authorization_manager.revocar(
+                herramienta,
+                origen=origen
+            )
+
+
         return {
             "estado": "accion_no_valida",
             "mensaje": "La accion de autorizacion no es valida.",

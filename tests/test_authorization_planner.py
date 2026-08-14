@@ -20,6 +20,11 @@ casos = [
     },
 
     {
+        "intencion": "revocar_herramienta",
+        "texto": "revoco internet"
+    },
+
+    {
         "intencion": "rechazar_herramienta",
         "texto": "rechazo internet"
     },
