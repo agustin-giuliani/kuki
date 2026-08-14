@@ -19,7 +19,24 @@ class ResponseGenerator:
             if datos.get("permiso_denegado"):
                 return "No tengo permiso para consultar la hora."
 
-            return "Son las " + datos["hora"]
+            resultado_tool = datos.get(
+                "resultado_tool"
+            )
+
+            if resultado_tool is None:
+                return "No pude consultar la hora."
+
+            if resultado_tool.get("estado") != "ok":
+                return "No pude consultar la hora."
+
+            hora = resultado_tool.get(
+                "resultado"
+            )
+
+            if hora is None:
+                return "No pude obtener la hora."
+
+            return "Son las " + hora
 
         elif intencion == "identidad_usuario":
 

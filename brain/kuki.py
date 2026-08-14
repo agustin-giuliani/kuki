@@ -11,6 +11,7 @@ from brain.language import LanguageProcessor
 from brain.conversation import Conversation
 from brain.context import ContextManager
 from brain.tools.manager import ToolManager
+from brain.tools.planner import ToolPlanner
 
 
 
@@ -31,6 +32,10 @@ class Kuki:
         self.contexto = ContextManager(self.conversacion)
 
         self.tools = ToolManager()
+
+        self.planificador = ToolPlanner(
+            self.tools.selector
+        )
 
         self.cargar_modelo()
 
@@ -73,110 +78,107 @@ class Kuki:
     def responder(self, entrada):
 
         # Guardamos el mensaje del usuario
-        self.conversacion.guardar("usuario", entrada)
+        self.conversacion.guardar(
+            "usuario",
+            entrada
+        )
 
-        # 1. Entender primero
-        resultado = self.lenguaje.procesar(entrada)
+        # 1. Entender
+        resultado = self.lenguaje.procesar(
+            entrada
+        )
 
         intencion = resultado["intencion"]
 
-        self.contexto.actualizar_tema(resultado)
+        self.contexto.actualizar_tema(
+            resultado
+        )
+
+        # 2. Crear plan
+        plan = self.planificador.planificar(
+            entrada,
+            resultado
+        )
 
         datos = {}
 
         respuesta = None
 
-        herramienta = self.tools.seleccionar(entrada)
+        # --------------------------------
+        # APRENDIZAJE DE MEMORIA
+        # --------------------------------
 
-
-        # 2. Aprendizaje de memoria personal
         if intencion == "aprendizaje_memoria":
 
-            tipo = self.aprendizaje.aprender_frase(entrada)
+            tipo = self.aprendizaje.aprender_frase(
+                entrada
+            )
 
             if tipo == "memoria":
                 respuesta = "Lo recordare."
             else:
                 respuesta = "No pude aprender eso."
 
-        # 3. Aprendizaje de conocimiento
+        # --------------------------------
+        # APRENDIZAJE DE CONOCIMIENTO
+        # --------------------------------
+
         elif intencion == "aprendizaje_conocimiento":
 
-            tipo = self.aprendizaje.aprender_frase(entrada)
+            tipo = self.aprendizaje.aprender_frase(
+                entrada
+            )
 
             if tipo == "conocimiento":
                 respuesta = "Lo aprendere."
             else:
                 respuesta = "No pude aprender eso."
 
-        elif intencion == "usar_herramienta":
+        # --------------------------------
+        # HERRAMIENTAS
+        # --------------------------------
 
-            herramienta = self.tools.seleccionar(
-                entrada
+        elif plan.get("necesita_herramienta"):
+
+            datos_plan = plan.get(
+                "datos",
+                {}
+            )
+
+            datos.update(
+                datos_plan
+            )
+
+            resultado_tool = self.tools.ejecutar_plan(
+                plan
+            )
+
+            datos["resultado_tool"] = resultado_tool
+
+            herramienta = plan.get(
+                "herramienta"
             )
 
             datos["herramienta"] = herramienta
 
-            if herramienta is None:
+            if resultado_tool["estado"] == "permiso_denegado":
 
-                datos["herramienta_no_encontrada"] = True
+                datos["permiso_denegado"] = True
 
-            else:
-
-                resultado_tool = self.tools.ejecutar(
+                solicitud = self.tools.solicitar_permiso(
                     herramienta
                 )
 
-                datos["resultado_tool"] = resultado_tool
-
-                if resultado_tool["estado"] == "permiso_denegado":
-
-                    datos["permiso_denegado"] = True
-
-                    solicitud = self.tools.solicitar_permiso(
-                        herramienta
-                    )
-
-                    datos["solicitud"] = solicitud
+                datos["solicitud"] = solicitud
 
             respuesta = self.respuestas.generar(
                 intencion,
                 datos
             )
 
-        elif intencion == "buscar_internet":
-
-            consulta = resultado.get("consulta")
-
-            datos["consulta"] = consulta
-
-            if not consulta:
-
-                datos["consulta_invalida"] = True
-
-            else:
-
-                resultado_tool = self.tools.ejecutar(
-                    "internet",
-                    consulta
-                )
-
-                datos["resultado_tool"] = resultado_tool
-
-                if resultado_tool["estado"] == "permiso_denegado":
-
-                    datos["permiso_denegado"] = True
-
-                    solicitud = self.tools.solicitar_permiso(
-                        "internet"
-                    )
-
-                    datos["solicitud"] = solicitud
-
-            respuesta = self.respuestas.generar(
-                intencion,
-                datos
-            )
+        # --------------------------------
+        # AUTORIZAR HERRAMIENTA
+        # --------------------------------
 
         elif intencion == "autorizar_herramienta":
 
@@ -203,6 +205,10 @@ class Kuki:
                 datos
             )
 
+        # --------------------------------
+        # RECHAZAR HERRAMIENTA
+        # --------------------------------
+
         elif intencion == "rechazar_herramienta":
 
             herramienta = self.tools.seleccionar(
@@ -228,47 +234,39 @@ class Kuki:
                 datos
             )
 
-        # 4. Preparar datos para la respuesta
+        # --------------------------------
+        # OTRAS INTENCIONES
+        # --------------------------------
+
         else:
 
-            if intencion == "hora":
+            if intencion == "identidad_usuario":
 
-                if herramienta == "hora":
-
-                    resultado_tool = self.tools.ejecutar(
-                        herramienta
-                    )
-
-                    if resultado_tool["estado"] == "ok":
-
-                        datos["hora"] = resultado_tool["resultado"]
-
-                    else:
-
-                        datos["permiso_denegado"] = True
-
-                else:
-
-                    datos["permiso_denegado"] = True
-
-            elif intencion == "identidad_usuario":
-
-                datos["nombre"] = self.memoria.recordar("nombre")
+                datos["nombre"] = self.memoria.recordar(
+                    "nombre"
+                )
 
             elif intencion == "recordar":
 
                 clave = resultado["clave"]
 
                 datos["clave"] = clave
-                datos["valor"] = self.memoria.recordar(clave)
+                datos["valor"] = self.memoria.recordar(
+                    clave
+                )
 
             elif intencion == "conocimiento":
 
                 clave = resultado["clave"]
-                categoria = resultado.get("categoria", "descripcion")
+
+                categoria = resultado.get(
+                    "categoria",
+                    "descripcion"
+                )
 
                 datos["clave"] = clave
                 datos["categoria"] = categoria
+
                 datos["valor"] = self.conocimiento.recordar(
                     clave,
                     categoria
@@ -282,6 +280,7 @@ class Kuki:
                 datos["categoria"] = "usos"
 
                 if tema is not None:
+
                     datos["valor"] = self.conocimiento.recordar(
                         tema,
                         "usos"

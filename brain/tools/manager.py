@@ -132,3 +132,37 @@ class ToolManager:
     def listar_solicitudes(self):
 
         return self.autorizacion.listar_solicitudes()
+
+    def ejecutar_plan(self, plan):
+
+        if not plan.get("necesita_herramienta"):
+
+            return {
+                "estado": "sin_herramienta",
+                "herramienta": None
+            }
+
+        herramienta = plan.get(
+            "herramienta"
+        )
+
+        datos = plan.get(
+            "datos",
+            {}
+        )
+
+        if herramienta is None:
+
+            return {
+                "estado": "herramienta_no_encontrada",
+                "herramienta": None
+            }
+
+        resultado = self.ejecutar(
+            herramienta,
+            **datos
+        )
+
+        resultado["herramienta"] = herramienta
+
+        return resultado
