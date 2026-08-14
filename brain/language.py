@@ -76,6 +76,58 @@ class LanguageProcessor:
                 "texto": texto
             }
 
+
+        # -------------------------
+        # BUSQUEDA EN INTERNET
+        # -------------------------
+
+        patrones_busqueda = [
+            "busca informacion sobre ",
+            "busca informacion sobre ",
+            "buscar informacion sobre ",
+            "buscar informacion sobre ",
+            "busca informacion de ",
+            "busca informacion de ",
+            "buscar informacion de ",
+            "buscar informacion de ",
+            "consulta informacion sobre ",
+            "consulta informacion sobre ",
+            "consultar informacion sobre ",
+            "consultar informacion sobre ",
+            "investiga sobre ",
+            "investigar sobre ",
+            "busca informacion sobre ",
+            "busca informacion sobre ",
+            "buscar informacion sobre ",
+            "buscar informacion sobre ",
+            "busca informacion de ",
+            "busca informacion de ",
+            "buscar informacion de ",
+            "buscar informacion de ",
+            "consulta informacion sobre ",
+            "consulta informacion sobre ",
+            "consultar informacion sobre ",
+            "consultar informacion sobre ",
+            "investiga sobre ",
+            "investigar sobre ",
+            "decime informacion sobre ",
+            "decime informacion sobre "
+        ]
+
+        for patron in patrones_busqueda:
+
+            if texto.startswith(patron):
+
+                consulta = texto[len(patron):].strip()
+
+                if consulta:
+
+                    return {
+                        "intencion": "buscar_internet",
+                        "consulta": consulta,
+                        "texto": texto
+                    }
+
         # -------------------------
         # CONOCIMIENTO
         # -------------------------
@@ -141,6 +193,34 @@ class LanguageProcessor:
                     "texto": texto
                 }
 
+
+        # -------------------------
+        # AUTORIZACION DE HERRAMIENTAS
+        # -------------------------
+
+        if (
+            "autorizo " in texto
+            or "permito usar " in texto
+            or "permito utilizar " in texto
+        ):
+
+            return {
+                "intencion": "autorizar_herramienta",
+                "texto": texto
+            }
+
+        if (
+            "rechazo " in texto
+            or "deniego " in texto
+            or "no permito " in texto
+        ):
+
+            return {
+                "intencion": "rechazar_herramienta",
+                "texto": texto
+            }
+
+
         # -------------------------
         # USO DE HERRAMIENTAS
         # -------------------------
@@ -158,6 +238,8 @@ class LanguageProcessor:
                 "intencion": "usar_herramienta",
                 "texto": texto
             }
+
+
 
         # -------------------------
         # DESCONOCIDO

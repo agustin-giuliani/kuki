@@ -4,6 +4,11 @@ from brain.tools.executor import ToolExecutor
 from brain.tools.basic import obtener_hora
 from brain.tools.catalog import ToolCatalog
 from brain.tools.selector import ToolSelector
+from brain.tools.authorization import AuthorizationManager
+from brain.tools.internet import (
+    consultar_internet,
+    buscar_internet
+)
 
 
 class ToolManager:
@@ -12,6 +17,10 @@ class ToolManager:
 
         self.registry = ToolRegistry()
         self.permissions = PermissionManager()
+
+        self.autorizacion = AuthorizationManager(
+            self.permissions
+        )
 
         self._registrar_herramientas()
 
@@ -44,8 +53,8 @@ class ToolManager:
         )
         self.registry.registrar(
             "internet",
-            None,
-            "Permite consultar informacion en Internet."
+            buscar_internet,
+            "Permite buscar informacion en Internet."
         )
 
         self.permissions.registrar(
@@ -98,3 +107,28 @@ class ToolManager:
         resultado["herramienta"] = herramienta
 
         return resultado
+
+    def solicitar_permiso(self, herramienta):
+
+            return self.autorizacion.solicitar(
+                herramienta
+            )
+    
+    def aprobar_permiso(self, herramienta):
+
+        return self.autorizacion.aprobar(
+            herramienta,
+            origen="usuario"
+        )
+
+
+    def rechazar_permiso(self, herramienta):
+
+        return self.autorizacion.rechazar(
+            herramienta,
+            origen="usuario"
+        )
+
+    def listar_solicitudes(self):
+
+        return self.autorizacion.listar_solicitudes()

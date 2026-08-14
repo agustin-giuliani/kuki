@@ -82,11 +82,12 @@ class Kuki:
 
         self.contexto.actualizar_tema(resultado)
 
-        herramienta = self.tools.seleccionar(entrada)
-
         datos = {}
 
         respuesta = None
+
+        herramienta = self.tools.seleccionar(entrada)
+
 
         # 2. Aprendizaje de memoria personal
         if intencion == "aprendizaje_memoria":
@@ -110,23 +111,117 @@ class Kuki:
 
         elif intencion == "usar_herramienta":
 
-            resultado_tool = self.tools.ejecutar_seleccion(
+            herramienta = self.tools.seleccionar(
                 entrada
             )
 
-            datos["herramienta"] = resultado_tool.get(
-                "herramienta"
-            )
+            datos["herramienta"] = herramienta
 
-            datos["resultado_tool"] = resultado_tool
-
-            if resultado_tool["estado"] == "herramienta_no_encontrada":
+            if herramienta is None:
 
                 datos["herramienta_no_encontrada"] = True
 
-            elif resultado_tool["estado"] == "permiso_denegado":
+            else:
 
-                datos["permiso_denegado"] = True
+                resultado_tool = self.tools.ejecutar(
+                    herramienta
+                )
+
+                datos["resultado_tool"] = resultado_tool
+
+                if resultado_tool["estado"] == "permiso_denegado":
+
+                    datos["permiso_denegado"] = True
+
+                    solicitud = self.tools.solicitar_permiso(
+                        herramienta
+                    )
+
+                    datos["solicitud"] = solicitud
+
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
+
+        elif intencion == "buscar_internet":
+
+            consulta = resultado.get("consulta")
+
+            datos["consulta"] = consulta
+
+            if not consulta:
+
+                datos["consulta_invalida"] = True
+
+            else:
+
+                resultado_tool = self.tools.ejecutar(
+                    "internet",
+                    consulta
+                )
+
+                datos["resultado_tool"] = resultado_tool
+
+                if resultado_tool["estado"] == "permiso_denegado":
+
+                    datos["permiso_denegado"] = True
+
+                    solicitud = self.tools.solicitar_permiso(
+                        "internet"
+                    )
+
+                    datos["solicitud"] = solicitud
+
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
+
+        elif intencion == "autorizar_herramienta":
+
+            herramienta = self.tools.seleccionar(
+                entrada
+            )
+
+            datos["herramienta"] = herramienta
+
+            if herramienta is None:
+
+                datos["herramienta_no_encontrada"] = True
+
+            else:
+
+                resultado = self.tools.aprobar_permiso(
+                    herramienta
+                )
+
+                datos["resultado_autorizacion"] = resultado
+
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
+
+        elif intencion == "rechazar_herramienta":
+
+            herramienta = self.tools.seleccionar(
+                entrada
+            )
+
+            datos["herramienta"] = herramienta
+
+            if herramienta is None:
+
+                datos["herramienta_no_encontrada"] = True
+
+            else:
+
+                resultado = self.tools.rechazar_permiso(
+                    herramienta
+                )
+
+                datos["resultado_autorizacion"] = resultado
 
             respuesta = self.respuestas.generar(
                 intencion,

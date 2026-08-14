@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class PermissionManager:
 
     NIVELES = {
@@ -9,6 +11,7 @@ class PermissionManager:
 
     def __init__(self):
         self.permisos = {}
+        self.historial = []
 
     def registrar(
         self,
@@ -45,24 +48,69 @@ class PermissionManager:
 
         return permiso["nivel"]
 
-    def conceder(self, herramienta):
+    def obtener_info(self, herramienta):
+
+        permiso = self.permisos.get(herramienta)
+
+        if permiso is None:
+            return None
+
+        return {
+            "nombre": herramienta,
+            "nivel": permiso["nivel"],
+            "permitido": permiso["permitido"]
+        }
+
+
+    def conceder(self, herramienta, origen="usuario"):
 
         if herramienta not in self.permisos:
             return False
 
         self.permisos[herramienta]["permitido"] = True
 
+        self.registrar_evento(
+            herramienta,
+            "conceder",
+            origen
+        )
+
         return True
 
-    def revocar(self, herramienta):
+    def revocar(self, herramienta, origen="usuario"):
 
         if herramienta not in self.permisos:
             return False
 
         self.permisos[herramienta]["permitido"] = False
 
-        return True
+        self.registrar_evento(
+            herramienta,
+            "revocar",
+            origen
+        )
 
+        return True
     def listar(self):
 
         return self.permisos.copy()
+
+    def registrar_evento(
+        self,
+        herramienta,
+        accion,
+        origen="usuario"
+    ):
+
+        evento = {
+            "herramienta": herramienta,
+            "accion": accion,
+            "origen": origen,
+            "fecha": datetime.now().isoformat()
+        }
+
+        self.historial.append(evento)
+
+    def obtener_historial(self):
+
+        return self.historial.copy()

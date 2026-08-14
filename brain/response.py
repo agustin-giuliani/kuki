@@ -93,21 +93,37 @@ class ResponseGenerator:
 
                 return "No encuentro una herramienta adecuada para eso."
 
+            herramienta = datos.get("herramienta")
+
             if datos.get("permiso_denegado"):
 
-                herramienta = datos.get("herramienta")
+                solicitud = datos.get("solicitud")
 
-                if herramienta:
+                if solicitud:
 
-                    return (
-                        "Necesito utilizar la herramienta "
-                        + herramienta
-                        + ", pero no tengo permiso para utilizarla."
-                    )
+                    if solicitud["estado"] == "pendiente":
 
-                return "No tengo permiso para utilizar esa herramienta."
+                        return (
+                            "Necesito utilizar la herramienta "
+                            + herramienta
+                            + ", pero no tengo permiso. "
+                            "Solicite tu autorizacion."
+                        )
 
-            herramienta = datos.get("herramienta")
+                    elif solicitud["estado"] == "ya_pendiente":
+
+                        return (
+                            "Ya tengo una solicitud pendiente "
+                            "para utilizar "
+                            + herramienta
+                            + "."
+                        )
+
+                return (
+                    "Necesito utilizar la herramienta "
+                    + herramienta
+                    + ", pero no tengo permiso para utilizarla."
+                )
 
             if herramienta:
 
@@ -118,5 +134,181 @@ class ResponseGenerator:
                 )
 
             return "No pude determinar que herramienta necesito."
+
+        elif intencion == "autorizar_herramienta":
+
+            if datos.get("herramienta_no_encontrada"):
+
+                return "No encuentro esa herramienta."
+
+            herramienta = datos.get("herramienta")
+            resultado = datos.get("resultado_autorizacion")
+
+            if resultado is None:
+
+                return "No pude procesar la autorizacion."
+
+            estado = resultado.get("estado")
+
+            if estado == "aprobada":
+
+                return (
+                    "Autorizacion concedida. "
+                    + herramienta
+                    + " ya esta habilitada."
+                )
+
+            if estado == "sin_solicitud":
+
+                return (
+                    "No existe una solicitud pendiente "
+                    "para "
+                    + herramienta
+                    + "."
+                )
+
+            if estado == "error":
+
+                return (
+                    "No pude autorizar "
+                    + herramienta
+                    + "."
+                )
+
+            return "No pude procesar la autorizacion."
+
+        elif intencion == "rechazar_herramienta":
+
+            if datos.get("herramienta_no_encontrada"):
+
+                return "No encuentro esa herramienta."
+
+            herramienta = datos.get("herramienta")
+            resultado = datos.get("resultado_autorizacion")
+
+            if resultado is None:
+
+                return "No pude procesar el rechazo."
+
+            estado = resultado.get("estado")
+
+            if estado == "rechazada":
+
+                return (
+                    "Entendido. No autorizare el uso de "
+                    + herramienta
+                    + "."
+                )
+
+            if estado == "sin_solicitud":
+
+                return (
+                    "No existe una solicitud pendiente "
+                    "para "
+                    + herramienta
+                    + "."
+                )
+
+            return "No pude procesar el rechazo."
+
+        elif intencion == "buscar_internet":
+
+            consulta = datos.get("consulta")
+
+            if datos.get("consulta_invalida"):
+
+                return "No pude determinar que informacion buscar."
+
+            if datos.get("permiso_denegado"):
+
+                solicitud = datos.get("solicitud")
+
+                if solicitud:
+
+                    estado = solicitud.get("estado")
+
+                    if estado == "pendiente":
+
+                        return (
+                            "Necesito utilizar Internet para buscar "
+                            "informacion sobre "
+                            + consulta
+                            + ". Solicite tu autorizacion."
+                        )
+
+                    elif estado == "ya_pendiente":
+
+                        return (
+                            "Ya tengo una solicitud pendiente para "
+                            "buscar informacion sobre "
+                            + consulta
+                            + "."
+                        )
+
+                return (
+                    "Necesito permiso para buscar informacion "
+                    "sobre "
+                    + consulta
+                    + "."
+                )
+
+            resultado_tool = datos.get("resultado_tool")
+
+            if resultado_tool is None:
+
+                return "No pude realizar la busqueda."
+
+            if resultado_tool.get("estado") != "ok":
+
+                return (
+                    "No pude buscar informacion sobre "
+                    + consulta
+                    + "."
+                )
+
+            resultado = resultado_tool.get(
+                "resultado",
+                {}
+            )
+
+            resultados = resultado.get(
+                "resultados",
+                []
+            )
+
+            if not resultados:
+
+                return (
+                    "No encontre informacion sobre "
+                    + consulta
+                    + "."
+                )
+
+            primero = resultados[0]
+
+            titulo = primero.get(
+                "titulo",
+                consulta
+            )
+
+            descripcion = primero.get(
+                "descripcion"
+            )
+
+            if descripcion:
+
+                return (
+                    "Encontre informacion sobre "
+                    + titulo
+                    + ". "
+                    + descripcion
+                    + "."
+                )
+
+            return (
+                "Encontre informacion sobre "
+                + titulo
+                + "."
+            )
 
         return "No entiendo esa intencion."

@@ -98,3 +98,27 @@ print(
     "Internet:",
     permisos.tiene_permiso("internet")
 )
+
+print()
+print("--- INFORMACION DE PERMISOS ---")
+
+print(
+    permisos.obtener_info("internet")
+)
+
+print(
+    permisos.obtener_info("escribir_archivos")
+)
+
+print(
+    permisos.obtener_info("instalar_software")
+)
+
+print()
+print("--- HISTORIAL DE PERMISOS ---")
+
+historial = permisos.obtener_historial()
+
+for evento in historial:
+
+    print(evento)

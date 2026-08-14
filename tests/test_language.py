@@ -36,3 +36,41 @@ print(
     "Entrada: Y para que sirve? | Intencion:",
     lenguaje.procesar("Y para que sirve?")["intencion"]
 )
+
+print(
+    "Autorizo internet",
+    "->",
+    lenguaje.procesar("Autorizo internet")["intencion"]
+)
+
+print(
+    "Permito usar internet",
+    "->",
+    lenguaje.procesar("Permito usar internet")["intencion"]
+)
+
+print(
+    "Rechazo internet",
+    "->",
+    lenguaje.procesar("Rechazo internet")["intencion"]
+)
+
+print(
+    "No permito internet",
+    "->",
+    lenguaje.procesar("No permito internet")["intencion"]
+)
+
+print(
+    "Busca informacion sobre Python ->",
+    lenguaje.procesar(
+        "Busca informacion sobre Python"
+    )
+)
+
+print(
+    "Investiga sobre Python ->",
+    lenguaje.procesar(
+        "Investiga sobre Python"
+    )
+)
