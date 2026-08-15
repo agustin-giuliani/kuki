@@ -5,26 +5,37 @@ class Vocabulary:
 
     def __init__(self):
 
-        self.palabras = set()
+        self.palabras = {}
 
-    def registrar(self, palabra):
+    def registrar(
+        self,
+        palabra,
+        origen="desconocido"
+    ):
 
         palabra = palabra.lower().strip()
 
         if not palabra:
             return False
 
-        self.palabras.add(palabra)
+        self.palabras[palabra] = origen
 
         return True
 
-    def registrar_muchas(self, palabras):
+    def registrar_muchas(
+        self,
+        palabras,
+        origen="desconocido"
+    ):
 
         cantidad = 0
 
         for palabra in palabras:
 
-            if self.registrar(palabra):
+            if self.registrar(
+                palabra,
+                origen
+            ):
                 cantidad += 1
 
         return cantidad
@@ -35,6 +46,14 @@ class Vocabulary:
 
         return palabra in self.palabras
 
+    def origen(self, palabra):
+
+        palabra = palabra.lower().strip()
+
+        return self.palabras.get(
+            palabra
+        )
+
     def eliminar(self, palabra):
 
         palabra = palabra.lower().strip()
@@ -42,15 +61,26 @@ class Vocabulary:
         if palabra not in self.palabras:
             return False
 
-        self.palabras.remove(palabra)
+        del self.palabras[palabra]
 
         return True
 
     def listar(self):
 
         return sorted(
-            self.palabras
+            self.palabras.keys()
         )
+
+    def listar_por_origen(self, origen):
+
+        palabras = []
+
+        for palabra, origen_palabra in self.palabras.items():
+
+            if origen_palabra == origen:
+                palabras.append(palabra)
+
+        return sorted(palabras)
 
     def cantidad(self):
 

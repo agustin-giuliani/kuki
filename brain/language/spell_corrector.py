@@ -17,7 +17,8 @@ class SpellCorrector:
         }
 
         self.vocabulario.registrar_muchas(
-            PALABRAS_BASE
+            PALABRAS_BASE,
+            origen="base"
         )
 
     def distancia(self, palabra1, palabra2):
