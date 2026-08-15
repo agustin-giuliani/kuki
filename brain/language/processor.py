@@ -1,20 +1,33 @@
 # -*- coding: utf-8 -*-
+from brain.language.normalizer import TextNormalizer
+from brain.language.spell_corrector import SpellCorrector
 
-from brain.normalizer import TextNormalizer
 
 
 class LanguageProcessor:
 
-    def __init__(self, normalizador=None):
+    def __init__(
+        self,
+        normalizador=None,
+        corrector=None
+    ):
 
         if normalizador is None:
             normalizador = TextNormalizer()
 
+        if corrector is None:
+            corrector = SpellCorrector()
+
         self.normalizador = normalizador
+        self.corrector = corrector
 
     def procesar(self, texto):
 
         texto = self.normalizador.normalizar(
+            texto
+        )
+
+        texto = self.corrector.corregir(
             texto
         )
 
@@ -23,7 +36,6 @@ class LanguageProcessor:
                 "intencion": "vacio",
                 "texto": texto
             }
-
         # -------------------------
         # IDENTIDAD DEL USUARIO
         # -------------------------

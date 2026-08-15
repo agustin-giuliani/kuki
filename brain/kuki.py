@@ -7,7 +7,7 @@ from brain.knowledge import Knowledge
 from brain.learning import Learning
 from brain.neuron import Neuron
 from brain.memory import Memory
-from brain.language import LanguageProcessor
+from brain.language.processor import LanguageProcessor
 from brain.conversation import Conversation
 from brain.context import ContextManager
 from brain.tools.manager import ToolManager

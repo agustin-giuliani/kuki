@@ -1,5 +1,5 @@
 
-from brain.language import LanguageProcessor
+from brain.language.processor import LanguageProcessor
 
 
 lenguaje = LanguageProcessor()
@@ -141,3 +141,24 @@ for texto in pruebas:
     print()
     print("Entrada:", texto)
     print("Resultado:", resultado)
+
+pruebas_permisos = [
+    "Que herramientas tenes",
+    "Que permisos tenes",
+    "Que herramientas estan habilitadas",
+    "Cuales son tus permisos"
+]
+
+print("--- PERMISOS ---")
+
+for entrada in pruebas_permisos:
+
+    resultado = lenguaje.procesar(
+        entrada
+    )
+
+    print(
+        entrada,
+        "->",
+        resultado
+    )

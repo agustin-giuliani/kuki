@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from brain.normalizer import TextNormalizer
+from brain.language.normalizer import TextNormalizer
 
 
 normalizador = TextNormalizer()
