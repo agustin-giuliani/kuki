@@ -1,55 +1,24 @@
 # -*- coding: utf-8 -*-
-
+from brain.language.vocabulary import Vocabulary
+from brain.language.vocabulary_base import PALABRAS_BASE
 
 class SpellCorrector:
 
-    def __init__(self):
+    def __init__(self, vocabulario=None):
+
+        if vocabulario is None:
+            vocabulario = Vocabulary()
+
+        self.vocabulario = vocabulario
 
         self.palabras_protegidas = {
             "estan",
             "cuales"
         }
 
-        self.vocabulario = {
-            "hola",
-            "buenas",
-            "como",
-            "estas",
-            "cual",
-            "es",
-            "tu",
-            "nombre",
-            "mi",
-            "que",
-            "hora",
-            "busca",
-            "buscar",
-            "informacion",
-            "sobre",
-            "python",
-            "consulta",
-            "consultar",
-            "investiga",
-            "investigar",
-            "internet",
-            "herramientas",
-            "tenes",
-            "tienes",
-            "habilitadas",
-            "permisos",
-            "autorizo",
-            "autorizar",
-            "permito",
-            "rechazo",
-            "rechazar",
-            "revoco",
-            "revocar",
-            "utilizar",
-            "usar",
-            "quiero",
-            "necesito",
-            "salir"
-        }
+        self.vocabulario.registrar_muchas(
+            PALABRAS_BASE
+        )
 
     def distancia(self, palabra1, palabra2):
 
@@ -105,7 +74,7 @@ class SpellCorrector:
 
     def corregir_palabra(self, palabra):
 
-        if palabra in self.vocabulario:
+        if self.vocabulario.conoce(palabra):
             return palabra
 
         if palabra in self.palabras_protegidas:
@@ -124,7 +93,7 @@ class SpellCorrector:
 
         candidatos = []
 
-        for candidata in self.vocabulario:
+        for candidata in self.vocabulario.listar():
 
             distancia = self.distancia(
                 palabra,
