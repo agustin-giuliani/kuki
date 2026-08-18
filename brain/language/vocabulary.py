@@ -18,6 +18,9 @@ class Vocabulary:
         if not palabra:
             return False
 
+        if palabra in self.palabras:
+            return False
+
         self.palabras[palabra] = origen
 
         return True

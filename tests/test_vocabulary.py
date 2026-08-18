@@ -9,17 +9,26 @@ print("--- VOCABULARIO ---")
 
 print(
     "Registrar hola:",
-    vocabulario.registrar("hola")
+    vocabulario.registrar(
+        "hola",
+        origen="base"
+    )
 )
 
 print(
     "Registrar Python:",
-    vocabulario.registrar("Python")
+    vocabulario.registrar(
+        "Python",
+        origen="base"
+    )
 )
 
 print(
     "Registrar internet:",
-    vocabulario.registrar("internet")
+    vocabulario.registrar(
+        "internet",
+        origen="herramienta"
+    )
 )
 
 
@@ -53,7 +62,8 @@ cantidad = vocabulario.registrar_muchas(
         "herramienta",
         "memoria",
         "conocimiento"
-    ]
+    ],
+    origen="base"
 )
 
 print(cantidad)
@@ -89,25 +99,17 @@ print(
     vocabulario.conoce("internet")
 )
 
-vocabulario.registrar(
-    "hola",
-    origen="base"
+
+print()
+print("Registrar blender:")
+
+print(
+    vocabulario.registrar(
+        "blender",
+        origen="aprendizaje"
+    )
 )
 
-vocabulario.registrar(
-    "Python",
-    origen="base"
-)
-
-vocabulario.registrar(
-    "internet",
-    origen="herramienta"
-)
-
-vocabulario.registrar(
-    "blender",
-    origen="aprendizaje"
-)
 
 print()
 print("Origen de hola:")
@@ -115,11 +117,13 @@ print(
     vocabulario.origen("hola")
 )
 
+
 print()
 print("Origen de python:")
 print(
     vocabulario.origen("python")
 )
+
 
 print()
 print("Origen de blender:")
@@ -134,14 +138,60 @@ print(
     vocabulario.listar_por_origen("base")
 )
 
+
 print()
 print("Palabras de origen aprendizaje:")
 print(
     vocabulario.listar_por_origen("aprendizaje")
 )
 
+
 print()
 print("Palabras de origen herramienta:")
 print(
     vocabulario.listar_por_origen("herramienta")
+)
+
+
+print()
+print("DUPLICADOS:")
+
+print(
+    "Registrar blender nuevamente:",
+    vocabulario.registrar(
+        "blender",
+        origen="herramienta"
+    )
+)
+
+print(
+    "Conoce blender:",
+    vocabulario.conoce("blender")
+)
+
+print(
+    "Origen de blender:",
+    vocabulario.origen("blender")
+)
+
+
+print()
+print("MAYUSCULAS:")
+
+print(
+    "Registrar PYTHON:",
+    vocabulario.registrar(
+        "PYTHON",
+        origen="aprendizaje"
+    )
+)
+
+print(
+    "Conoce python:",
+    vocabulario.conoce("python")
+)
+
+print(
+    "Origen de python:",
+    vocabulario.origen("python")
 )
