@@ -73,19 +73,23 @@ class SpellCorrector:
 
         return matriz[longitud1][longitud2]
 
-    def corregir_palabra(self, palabra):
+    def buscar_candidatos(self, palabra):
+
+        palabra = palabra.lower().strip()
+
+        if not palabra:
+            return []
 
         if self.vocabulario.conoce(palabra):
-            return palabra
+            return []
 
         if palabra in self.palabras_protegidas:
-            return palabra
-
+            return []
 
         longitud = len(palabra)
 
         if longitud <= 3:
-            return palabra
+            return []
 
         if longitud <= 5:
             distancia_maxima = 1
@@ -104,31 +108,96 @@ class SpellCorrector:
             if distancia <= distancia_maxima:
 
                 candidatos.append(
-                    (
-                        candidata,
-                        distancia
-                    )
+                    {
+                        "palabra": candidata,
+                        "distancia": distancia
+                    }
                 )
+
+        candidatos.sort(
+            key=lambda candidato: candidato["distancia"]
+        )
+
+        return candidatos
+
+
+    def analizar_palabra(self, palabra):
+
+        palabra = palabra.lower().strip()
+
+        if not palabra:
+            return {
+                "estado": "vacia",
+                "palabra": palabra,
+                "candidatos": []
+            }
+
+        if self.vocabulario.conoce(palabra):
+
+            return {
+                "estado": "conocida",
+                "palabra": palabra,
+                "candidatos": []
+            }
+
+        candidatos = self.buscar_candidatos(
+            palabra
+        )
+
+        if not candidatos:
+
+            return {
+                "estado": "desconocida",
+                "palabra": palabra,
+                "candidatos": []
+            }
+
+        mejor_distancia = candidatos[0]["distancia"]
+
+        mejores = [
+            candidato
+            for candidato in candidatos
+            if candidato["distancia"] == mejor_distancia
+        ]
+
+        if len(mejores) == 1:
+
+            return {
+                "estado": "error_probable",
+                "palabra": palabra,
+                "candidatos": mejores
+            }
+
+        return {
+            "estado": "ambigua",
+            "palabra": palabra,
+            "candidatos": mejores
+        }
+
+
+    def corregir_palabra(self, palabra):
+
+        palabra = palabra.lower().strip()
+
+        if self.vocabulario.conoce(palabra):
+            return palabra
+
+        if palabra in self.palabras_protegidas:
+            return palabra
+
+        candidatos = self.buscar_candidatos(
+            palabra
+        )
 
         if not candidatos:
             return palabra
 
-        # --------------------------------
-        # SOLO CORREGIMOS SI HAY
-        # UNA CANDIDATA CLARA
-        # --------------------------------
-
-        candidatos.sort(
-            key=lambda elemento: elemento[1]
-        )
-
-        mejor_distancia = candidatos[0][1]
+        mejor_distancia = candidatos[0]["distancia"]
 
         mejores = [
-            candidata
-            for candidata, distancia
-            in candidatos
-            if distancia == mejor_distancia
+            candidato["palabra"]
+            for candidato in candidatos
+            if candidato["distancia"] == mejor_distancia
         ]
 
         # Si hay empate, no adivinamos.

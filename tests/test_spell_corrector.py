@@ -58,3 +58,52 @@ for frase in frases:
         "->",
         resultado
     )
+
+print()
+print("--- CANDIDATOS ---")
+
+pruebas_candidatos = [
+    "hoal",
+    "hroa",
+    "pyhton",
+    "intrenet",
+    "bl3nder",
+    "xyzabc"
+]
+
+for palabra in pruebas_candidatos:
+
+    candidatos = corrector.buscar_candidatos(
+        palabra
+    )
+
+    print(
+        palabra,
+        "->",
+        candidatos
+    )
+
+print()
+print("--- ANALISIS ---")
+
+pruebas_analisis = [
+    "hola",
+    "hoal",
+    "hroa",
+    "pyhton",
+    "intrenet",
+    "bl3nder",
+    "xyzabc"
+]
+
+for palabra in pruebas_analisis:
+
+    resultado = corrector.analizar_palabra(
+        palabra
+    )
+
+    print(
+        palabra,
+        "->",
+        resultado
+    )
