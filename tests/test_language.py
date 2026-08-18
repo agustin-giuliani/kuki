@@ -4,6 +4,20 @@ from brain.language.processor import LanguageProcessor
 
 lenguaje = LanguageProcessor()
 
+print("--- VARIANTES EN LANGUAGE PROCESSOR ---")
+
+resultado = lenguaje.procesar(
+    "bl3nder"
+)
+
+print(resultado)
+
+resultado = lenguaje.procesar(
+    "pyth0n"
+)
+
+print(resultado)
+
 print("--- PROCESADOR DE LENGUAJE DE KUKI ---")
 
 frases = [

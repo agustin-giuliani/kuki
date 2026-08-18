@@ -39,5 +39,6 @@ PALABRAS_BASE = [
     "usar",
     "quiero",
     "necesito",
-    "salir"
+    "salir",
+    "blender"
 ]
