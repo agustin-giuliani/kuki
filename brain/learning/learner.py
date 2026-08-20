@@ -137,3 +137,21 @@ class Learning:
         )
 
         return "conocimiento"
+
+    def recordar_memoria(self, clave):
+
+        return self.memoria.recordar(
+            clave
+        )
+
+
+    def recordar_conocimiento(
+        self,
+        clave,
+        categoria="descripcion"
+    ):
+
+        return self.conocimiento.recordar(
+            clave,
+            categoria
+        )

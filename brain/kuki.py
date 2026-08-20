@@ -219,10 +219,9 @@ class Kuki:
         # --------------------------------
 
         else:
-
             if intencion == "identidad_usuario":
 
-                datos["nombre"] = self.memoria.recordar(
+                datos["nombre"] = self.aprendizaje.recordar_memoria(
                     "nombre"
                 )
 
@@ -231,9 +230,9 @@ class Kuki:
                 clave = resultado["clave"]
 
                 datos["clave"] = clave
-                datos["valor"] = self.memoria.recordar(
+                datos["valor"] = self.aprendizaje.recordar_memoria(
                     clave
-                )
+            )
 
             elif intencion == "conocimiento":
 
@@ -247,7 +246,7 @@ class Kuki:
                 datos["clave"] = clave
                 datos["categoria"] = categoria
 
-                datos["valor"] = self.conocimiento.recordar(
+                datos["valor"] = self.aprendizaje.recordar_conocimiento(
                     clave,
                     categoria
                 )
@@ -261,7 +260,7 @@ class Kuki:
 
                 if tema is not None:
 
-                    datos["valor"] = self.conocimiento.recordar(
+                    datos["valor"] = self.aprendizaje.recordar_conocimiento(
                         tema,
                         "usos"
                     )
