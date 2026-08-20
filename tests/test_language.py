@@ -176,3 +176,24 @@ for entrada in pruebas_permisos:
         "->",
         resultado
     )
+
+print()
+print("--- DATOS DE APRENDIZAJE ---")
+
+resultado = lenguaje.procesar(
+    "Mi color favorito es negro"
+)
+
+print(resultado)
+
+resultado = lenguaje.procesar(
+    "Me llamo Agustin"
+)
+
+print(resultado)
+
+resultado = lenguaje.procesar(
+    "Python es un lenguaje de programacion"
+)
+
+print(resultado)

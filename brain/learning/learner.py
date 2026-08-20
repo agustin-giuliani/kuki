@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from .knowledge import Knowledge
+
 
 class Learning:
 
@@ -7,6 +9,55 @@ class Learning:
 
         self.memoria = memoria
         self.conocimiento = conocimiento
+
+    def aprender(self, resultado):
+
+        if not resultado:
+            return None
+
+        intencion = resultado.get(
+            "intencion"
+        )
+
+        clave = resultado.get(
+            "clave"
+        )
+
+        valor = resultado.get(
+            "valor"
+        )
+
+        if not clave or not valor:
+            return None
+
+        # --------------------------------
+        # APRENDIZAJE DE MEMORIA
+        # --------------------------------
+
+        if intencion == "aprendizaje_memoria":
+
+            self.memoria.guardar(
+                clave,
+                valor
+            )
+
+            return "memoria"
+
+        # --------------------------------
+        # APRENDIZAJE DE CONOCIMIENTO
+        # --------------------------------
+
+        if intencion == "aprendizaje_conocimiento":
+
+            self.conocimiento.guardar(
+                clave,
+                valor,
+                "descripcion"
+            )
+
+            return "conocimiento"
+
+        return None
 
     def aprender_frase(self, texto):
 

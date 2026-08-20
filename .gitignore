@@ -12,6 +12,8 @@ __pycache__/
 data/memory.json
 data/knowledge.json
 data/conversation.json
+data/test_knowledge.json
+data/test_memory.json
 
 # Variables de entorno / archivos personales
 .env

@@ -267,30 +267,59 @@ class LanguageProcessor:
 
         if texto.startswith("me llamo "):
 
-            return self.crear_resultado(
-                "aprendizaje_memoria",
-                texto,
-                analisis_variantes
-            )
+            nombre = texto[9:].strip()
+
+            if nombre:
+
+                return {
+                    "intencion": "aprendizaje_memoria",
+                    "tipo": "nombre",
+                    "clave": "nombre",
+                    "valor": nombre,
+                    "texto": texto
+                }
+
 
         if texto.startswith("mi ") and " es " in texto:
 
-            return self.crear_resultado(
-                "aprendizaje_memoria",
-                texto,
-                analisis_variantes
+            clave, valor = texto.split(
+                " es ",
+                1
             )
 
-        if (
-            " es " in texto
-            and not texto.startswith("cual es ")
-        ):
+            clave = clave[3:].strip()
+            valor = valor.strip().rstrip(".")
 
-            return self.crear_resultado(
-                "aprendizaje_conocimiento",
-                texto,
-                analisis_variantes
+            if clave and valor:
+
+                return {
+                    "intencion": "aprendizaje_memoria",
+                    "tipo": "dato_usuario",
+                    "clave": clave,
+                    "valor": valor,
+                    "texto": texto
+                }
+
+
+        if " es " in texto and not texto.startswith("cual es "):
+
+            clave, valor = texto.split(
+                " es ",
+                1
             )
+
+            clave = clave.strip()
+            valor = valor.strip().rstrip(".")
+
+            if clave and valor:
+
+                return {
+                    "intencion": "aprendizaje_conocimiento",
+                    "tipo": "conocimiento",
+                    "clave": clave,
+                    "valor": valor,
+                    "texto": texto
+                }
 
         # -------------------------
         # PREGUNTA CONTEXTUAL

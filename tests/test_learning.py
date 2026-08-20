@@ -1,38 +1,98 @@
-from brain.memory import Memory
-from brain.knowledge import Knowledge
-from brain.learning import Learning
+from brain.learning.learner import Learning
+from brain.learning.memory import Memory
+from brain.learning.knowledge import Knowledge
 
 
-memoria = Memory()
-conocimiento = Knowledge()
+memoria = Memory(
+    "data/test_memory.json"
+)
 
-aprendizaje = Learning(memoria)
+conocimiento = Knowledge(
+    "data/test_knowledge.json"
+)
 
-print("--- APRENDIZAJE DE KUKI ---")
+learning = Learning(
+    memoria,
+    conocimiento
+)
 
-# Informacion personal
-frase_personal = "Mi comida favorita es la pizza"
 
-aprendio = aprendizaje.aprender_frase(frase_personal)
+print("--- LEARNING ---")
 
-if aprendio:
-    print(
-        "Memoria personal:",
-        memoria.recordar("comida favorita")
+
+resultado_memoria = {
+    "intencion": "aprendizaje_memoria",
+    "tipo": "dato_usuario",
+    "clave": "color favorito",
+    "valor": "negro",
+    "texto": "mi color favorito es negro"
+}
+
+
+print()
+print("Aprender memoria:")
+
+print(
+    learning.aprender(
+        resultado_memoria
     )
-else:
-    print("KUKI no pudo aprender la informacion personal.")
+)
 
-
-# Conocimiento general
-frase_conocimiento = "Python es un lenguaje de programacion"
-
-aprendio = aprendizaje.aprender_frase(frase_conocimiento)
-
-if aprendio:
-    print(
-        "Conocimiento:",
-        conocimiento.recordar("python")
+print(
+    "Recordar color:",
+    memoria.recordar(
+        "color favorito"
     )
-else:
-    print("KUKI no pudo aprender el conocimiento.")
+)
+
+
+resultado_nombre = {
+    "intencion": "aprendizaje_memoria",
+    "tipo": "nombre",
+    "clave": "nombre",
+    "valor": "agustin",
+    "texto": "me llamo agustin"
+}
+
+
+print()
+print("Aprender nombre:")
+
+print(
+    learning.aprender(
+        resultado_nombre
+    )
+)
+
+print(
+    "Recordar nombre:",
+    memoria.recordar(
+        "nombre"
+    )
+)
+
+
+resultado_conocimiento = {
+    "intencion": "aprendizaje_conocimiento",
+    "tipo": "conocimiento",
+    "clave": "python",
+    "valor": "un lenguaje de programacion",
+    "texto": "python es un lenguaje de programacion"
+}
+
+
+print()
+print("Aprender conocimiento:")
+
+print(
+    learning.aprender(
+        resultado_conocimiento
+    )
+)
+
+print(
+    "Recordar Python:",
+    conocimiento.recordar(
+        "python"
+    )
+)
