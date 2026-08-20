@@ -1,9 +1,10 @@
-from brain.knowledge import Knowledge
-
+# -*- coding: utf-8 -*-
+from .knowledge import Knowledge
 
 class Learning:
 
     def __init__(self, memoria, conocimiento):
+
         self.memoria = memoria
         self.conocimiento = conocimiento
 
@@ -11,26 +12,44 @@ class Learning:
 
         texto = texto.lower().strip()
 
-        # No aprender preguntas
+        # --------------------------------
+        # NO APRENDER PREGUNTAS
+        # --------------------------------
+
         if texto.startswith("que es "):
             return None
 
         if texto.startswith("cual es "):
             return None
 
-        # Aprender nombre
+        # --------------------------------
+        # APRENDER NOMBRE
+        # --------------------------------
+
         if texto.startswith("me llamo "):
 
             nombre = texto[9:].strip()
 
             if nombre:
-                self.memoria.guardar("nombre", nombre)
+
+                self.memoria.guardar(
+                    "nombre",
+                    nombre
+                )
+
                 return "memoria"
+
+        # --------------------------------
+        # FRASE DE CONOCIMIENTO
+        # --------------------------------
 
         if " es " not in texto:
             return None
 
-        clave, valor = texto.split(" es ", 1)
+        clave, valor = texto.split(
+            " es ",
+            1
+        )
 
         clave = clave.strip()
         valor = valor.strip().rstrip(".")
@@ -38,7 +57,10 @@ class Learning:
         if not clave or not valor:
             return None
 
-        # Informacion personal
+        # --------------------------------
+        # INFORMACION PERSONAL
+        # --------------------------------
+
         if texto.startswith("mi "):
 
             clave = clave[3:].strip()
@@ -46,11 +68,17 @@ class Learning:
             if clave.startswith("cual"):
                 return None
 
-            self.memoria.guardar(clave, valor)
+            self.memoria.guardar(
+                clave,
+                valor
+            )
 
             return "memoria"
 
-        # Conocimiento general
+        # --------------------------------
+        # CONOCIMIENTO GENERAL
+        # --------------------------------
+
         self.conocimiento.guardar(
             clave,
             valor,

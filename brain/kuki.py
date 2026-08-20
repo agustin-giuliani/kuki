@@ -3,10 +3,10 @@
 import json
 
 from brain.response import ResponseGenerator
-from brain.knowledge import Knowledge
-from brain.learning import Learning
+from brain.learning.knowledge import Knowledge
+from brain.learning.learner import Learning
 from brain.neuron import Neuron
-from brain.memory import Memory
+from brain.learning.memory import Memory
 from brain.language.processor import LanguageProcessor
 from brain.conversation import Conversation
 from brain.context import ContextManager
