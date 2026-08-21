@@ -31,3 +31,11 @@ class ContextManager:
                 self.tema_actual = clave
 
         return self.tema_actual
+    def procesar(self, resultado):
+
+        if not resultado:
+            return self.tema_actual
+
+        return self.actualizar_tema(
+            resultado
+        )

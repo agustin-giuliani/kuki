@@ -91,7 +91,7 @@ class Kuki:
 
         intencion = resultado["intencion"]
 
-        self.contexto.actualizar_tema(
+        self.contexto.procesar(
             resultado
         )
 
