@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from .knowledge import Knowledge
-
 
 class Learning:
 
@@ -19,6 +17,34 @@ class Learning:
             "intencion"
         )
 
+        # --------------------------------
+        # APRENDIZAJE DE MEMORIA
+        # --------------------------------
+
+        if intencion == "aprendizaje_memoria":
+
+            return self._aprender_memoria(
+                resultado
+            )
+
+        # --------------------------------
+        # APRENDIZAJE DE CONOCIMIENTO
+        # --------------------------------
+
+        if intencion == "aprendizaje_conocimiento":
+
+            return self._aprender_conocimiento(
+                resultado
+            )
+
+        # --------------------------------
+        # SIN APRENDIZAJE
+        # --------------------------------
+
+        return None
+
+    def _aprender_memoria(self, resultado):
+
         clave = resultado.get(
             "clave"
         )
@@ -30,34 +56,33 @@ class Learning:
         if not clave or not valor:
             return None
 
-        # --------------------------------
-        # APRENDIZAJE DE MEMORIA
-        # --------------------------------
+        self.memoria.guardar(
+            clave,
+            valor
+        )
 
-        if intencion == "aprendizaje_memoria":
+        return "memoria"
 
-            self.memoria.guardar(
-                clave,
-                valor
-            )
+    def _aprender_conocimiento(self, resultado):
 
-            return "memoria"
+        clave = resultado.get(
+            "clave"
+        )
 
-        # --------------------------------
-        # APRENDIZAJE DE CONOCIMIENTO
-        # --------------------------------
+        valor = resultado.get(
+            "valor"
+        )
 
-        if intencion == "aprendizaje_conocimiento":
+        if not clave or not valor:
+            return None
 
-            self.conocimiento.guardar(
-                clave,
-                valor,
-                "descripcion"
-            )
+        self.conocimiento.guardar(
+            clave,
+            valor,
+            "descripcion"
+        )
 
-            return "conocimiento"
-
-        return None
+        return "conocimiento"
 
     def aprender_frase(self, texto):
 
@@ -143,7 +168,6 @@ class Learning:
         return self.memoria.recordar(
             clave
         )
-
 
     def recordar_conocimiento(
         self,

@@ -109,26 +109,17 @@ class Kuki:
         # APRENDIZAJE
         # --------------------------------
 
-        if intencion in (
-            "aprendizaje_memoria",
-            "aprendizaje_conocimiento"
-        ):
+        tipo = self.aprendizaje.aprender(
+            resultado
+        )
 
-            tipo = self.aprendizaje.aprender(
-                resultado
-            )
+        if tipo == "memoria":
 
-            if tipo == "memoria":
+            respuesta = "Lo recordare."
 
-                respuesta = "Lo recordare."
+        elif tipo == "conocimiento":
 
-            elif tipo == "conocimiento":
-
-                respuesta = "Lo aprendere."
-
-            else:
-
-                respuesta = "No pude aprender eso."
+            respuesta = "Lo aprendere."
 
         # --------------------------------
         # HERRAMIENTAS
