@@ -2,28 +2,83 @@ from brain.conversation import Conversation
 from brain.context import ContextManager
 
 
-conversacion = Conversation()
-contexto = ContextManager(conversacion)
+conversacion = Conversation(
+    "data/test_context_conversation.json"
+)
 
-print("--- CONTEXTO DE KUKI ---")
+contexto = ContextManager(
+    conversacion
+)
 
-datos = contexto.obtener_contexto(4)
 
-for mensaje in datos["mensajes"]:
+print("--- CONTEXT MANAGER ---")
 
-    print(
-        mensaje["rol"] + ":",
-        mensaje["mensaje"]
-    )
 
 print()
-print("--- DETECCION AUTOMATICA ---")
+print("Tema inicial:")
 
-resultado = {
+print(
+    contexto.obtener_tema()
+)
+
+
+print()
+print("Procesar Python:")
+
+resultado_python = contexto.procesar({
     "intencion": "conocimiento",
     "clave": "python"
-}
+})
 
-tema = contexto.actualizar_tema(resultado)
+print(
+    resultado_python
+)
 
-print("Tema detectado:", tema)
+
+print()
+print("Tema actual:")
+
+print(
+    contexto.obtener_tema()
+)
+
+
+print()
+print("Pregunta contextual:")
+
+resultado_contextual = contexto.procesar({
+    "intencion": "pregunta_contextual"
+})
+
+print(
+    resultado_contextual
+)
+
+
+print()
+print("Tema despues de pregunta:")
+
+print(
+    contexto.obtener_tema()
+)
+
+
+print()
+print("Procesar Blender:")
+
+resultado_blender = contexto.procesar({
+    "intencion": "conocimiento",
+    "clave": "blender"
+})
+
+print(
+    resultado_blender
+)
+
+
+print()
+print("Tema final:")
+
+print(
+    contexto.obtener_tema()
+)

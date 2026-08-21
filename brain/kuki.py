@@ -91,7 +91,7 @@ class Kuki:
 
         intencion = resultado["intencion"]
 
-        self.contexto.procesar(
+        tema_contextual = self.contexto.procesar(
             resultado
         )
 
@@ -253,7 +253,7 @@ class Kuki:
 
             elif intencion == "pregunta_contextual":
 
-                tema = self.contexto.obtener_tema()
+                tema = tema_contextual
 
                 datos["tema"] = tema
                 datos["categoria"] = "usos"
