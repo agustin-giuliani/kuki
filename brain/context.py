@@ -36,14 +36,27 @@ class ContextManager:
         if not resultado:
             return self.tema_actual
 
-        if resultado.get("intencion") == "conocimiento":
+        intencion = resultado.get("intencion")
+
+        if intencion == "conocimiento":
 
             clave = resultado.get("clave")
 
             if clave:
-
                 self.establecer_tema(
                     clave
+                )
+
+        elif intencion in (
+            "buscar_internet",
+            "aprender_internet"
+        ):
+
+            consulta = resultado.get("consulta")
+
+            if consulta:
+                self.establecer_tema(
+                    consulta
                 )
 
         return self.tema_actual
