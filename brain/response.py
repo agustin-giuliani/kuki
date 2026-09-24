@@ -371,6 +371,97 @@ class ResponseGenerator:
                 + "."
             )
 
+        elif intencion == "aprender_internet":
+
+            consulta = datos.get("consulta")
+
+            if datos.get("consulta_invalida"):
+                return "No pude determinar que informacion aprender."
+
+            if datos.get("permiso_denegado"):
+
+                solicitud = datos.get("solicitud")
+
+                if solicitud:
+
+                    estado = solicitud.get("estado")
+
+                    if estado == "pendiente":
+                        return (
+                            "Necesito utilizar Internet para aprender "
+                            "sobre "
+                            + consulta
+                            + ". Solicite tu autorizacion."
+                        )
+
+                    elif estado == "ya_pendiente":
+                        return (
+                            "Ya tengo una solicitud pendiente para "
+                            "aprender sobre "
+                            + consulta
+                            + "."
+                        )
+
+                return (
+                    "Necesito permiso para aprender sobre "
+                    + consulta
+                    + "."
+                )
+
+            resultado_tool = datos.get("resultado_tool")
+
+            if resultado_tool is None:
+                return "No pude obtener informacion de Internet."
+
+            if resultado_tool.get("estado") != "ok":
+                return (
+                    "No pude aprender sobre "
+                    + consulta
+                    + "."
+                )
+
+            resultado = resultado_tool.get(
+                "resultado",
+                {}
+            )
+
+            resultados = resultado.get(
+                "resultados",
+                []
+            )
+
+            if not resultados:
+                return (
+                    "No encontre informacion para aprender sobre "
+                    + consulta
+                    + "."
+                )
+
+            primero = resultados[0]
+
+            titulo = primero.get(
+                "titulo",
+                consulta
+            )
+
+            descripcion = primero.get(
+                "descripcion"
+            )
+
+            if descripcion:
+                return (
+                    "Estoy aprendiendo sobre "
+                    + titulo
+                    + ". "
+                    + descripcion
+                    + "."
+                )
+
+            return (
+                "Estoy aprendiendo sobre"
+                + titulo
+                + "."
+            )
 
         elif intencion == "consultar_permisos":
 

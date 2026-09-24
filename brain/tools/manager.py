@@ -62,12 +62,14 @@ class ToolManager:
             "seguro",
             True
         )
+
         self.registry.registrar(
             "internet",
             buscar_internet,
             "Permite buscar informacion en Internet.",
             [
                 "buscar_internet",
+                "aprender_internet",
                 "usar_herramienta"
             ]
         )

@@ -1,6 +1,6 @@
 from brain.tools.manager import ToolManager
 from brain.tools.planner import ToolPlanner
-from brain.language import LanguageProcessor
+from brain.language.processor import LanguageProcessor
 
 
 tools = ToolManager()
@@ -39,3 +39,21 @@ for entrada in entradas:
     print("Entrada:", entrada)
     print("Lenguaje:", resultado)
     print("Plan:", plan)
+print()
+print("--- APRENDER DE INTERNET ---")
+
+entrada = "aprende de internet sobre python"
+
+resultado_lenguaje = lenguaje.procesar(
+    entrada
+)
+
+plan = planner.planificar(
+    entrada,
+    resultado_lenguaje
+)
+
+print()
+print("Entrada:", entrada)
+print("Lenguaje:", resultado_lenguaje)
+print("Plan:", plan)

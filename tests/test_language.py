@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from brain.language.processor import LanguageProcessor
 
 
@@ -197,3 +197,25 @@ resultado = lenguaje.procesar(
 )
 
 print(resultado)
+
+pruebas = [
+    "aprende de internet sobre python",
+    "aprende de internet como hacer un CRUD en C#",
+    "aprende en internet sobre blender",
+
+    "busca informacion sobre python",
+    "investiga sobre blender",
+
+    "que es python",
+]
+
+
+for texto in pruebas:
+
+    resultado = lenguaje.procesar(texto)
+
+    print()
+    print("=" * 60)
+    print("Entrada:", texto)
+    print("Intencion:", resultado["intencion"])
+    print("Resultado:", resultado)

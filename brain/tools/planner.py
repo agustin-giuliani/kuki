@@ -20,7 +20,10 @@ class ToolPlanner:
 
             datos = {}
 
-            if intencion == "buscar_internet":
+            if intencion in (
+                "buscar_internet",
+                "aprender_internet"
+            ):
 
                 datos["consulta"] = resultado_lenguaje.get(
                     "consulta"

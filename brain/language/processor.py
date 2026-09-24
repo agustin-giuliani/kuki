@@ -191,6 +191,38 @@ class LanguageProcessor:
             )
 
         # -------------------------
+        # APRENDER DE INTERNET
+        # -------------------------
+
+        patrones_aprendizaje_internet = [
+            "aprende de internet sobre ",
+            "aprende de internet acerca de ",
+            "aprende de internet como ",
+            "aprende de internet como ",
+            "aprende en internet sobre ",
+            "aprende en internet acerca de ",
+            "aprende en internet como ",
+            "aprende en internet como "
+        ]
+
+        for patron in patrones_aprendizaje_internet:
+
+            if texto.startswith(patron):
+
+                consulta = texto[
+                    len(patron):
+                ].strip()
+
+                if consulta:
+
+                    return self.crear_resultado(
+                        "aprender_internet",
+                        texto,
+                        analisis_variantes,
+                        consulta=consulta
+                    )
+
+        # -------------------------
         # BUSQUEDA EN INTERNET
         # -------------------------
 
