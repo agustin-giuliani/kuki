@@ -142,6 +142,19 @@ class Kuki:
 
             datos["resultado_tool"] = resultado_tool
 
+            # --------------------------------
+            # APRENDIZAJE DESDE HERRAMIENTA
+            # --------------------------------
+
+            if (
+                intencion == "aprender_internet"
+                and resultado_tool.get("estado") == "ok"
+            ):
+
+                self.aprendizaje.aprender_externo(
+                    resultado_tool
+                )
+
             herramienta = plan.get(
                 "herramienta"
             )

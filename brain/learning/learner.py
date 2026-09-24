@@ -179,3 +179,59 @@ class Learning:
             clave,
             categoria
         )
+
+    # --------------------------------
+    # APRENDIZAJE EXTERNO
+    # --------------------------------
+
+    def aprender_externo(self, resultado_tool):
+
+        # Verificamos que exista un resultado
+        if not resultado_tool:
+            return None
+
+        # La herramienta debe haber terminado correctamente
+        if resultado_tool.get("estado") != "ok":
+            return None
+
+        resultado = resultado_tool.get(
+            "resultado"
+        )
+
+        if not resultado:
+            return None
+
+        # Obtenemos los resultados encontrados
+        resultados = resultado.get(
+            "resultados"
+        )
+
+        if not resultados:
+            return None
+
+        # Por ahora aprendemos del primer resultado.
+        # Más adelante podremos analizar varios resultados.
+        primer_resultado = resultados[0]
+
+        if not primer_resultado:
+            return None
+
+        clave = primer_resultado.get(
+            "titulo"
+        )
+
+        descripcion = primer_resultado.get(
+            "descripcion"
+        )
+
+        if not clave or not descripcion:
+            return None
+
+        # Guardamos la información como conocimiento general.
+        self.conocimiento.guardar(
+            clave,
+            descripcion,
+            "descripcion"
+        )
+
+        return "conocimiento"

@@ -16,7 +16,21 @@ class Knowledge:
             with open(self.archivo, "w", encoding="utf-8") as archivo:
                 json.dump({}, archivo, indent=4, ensure_ascii=False)
 
+    def _normalizar_clave(self, clave):
+
+        if not clave:
+            return None
+
+        return clave.strip().lower()
+
     def guardar(self, clave, valor, categoria="descripcion"):
+
+        clave = self._normalizar_clave(
+            clave
+        )
+
+        if not clave or not valor:
+            return
 
         with open(self.archivo, "r", encoding="utf-8") as archivo:
             conocimiento = json.load(archivo)
@@ -49,6 +63,13 @@ class Knowledge:
             )
 
     def recordar(self, clave, categoria="descripcion"):
+
+        clave = self._normalizar_clave(
+            clave
+        )
+
+        if not clave:
+            return None
 
         with open(self.archivo, "r", encoding="utf-8") as archivo:
             conocimiento = json.load(archivo)

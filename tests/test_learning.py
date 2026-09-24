@@ -96,3 +96,67 @@ print(
         "python"
     )
 )
+
+# --------------------------------
+# APRENDIZAJE EXTERNO
+# --------------------------------
+
+resultado_externo = {
+    "estado": "ok",
+    "resultado": {
+        "consulta": "python",
+        "resultados": [
+            {
+                "titulo": "Python",
+                "descripcion": "lenguaje de programacion de alto nivel"
+            }
+        ]
+    }
+}
+
+
+print()
+print("Aprender desde fuente externa:")
+
+print(
+    learning.aprender_externo(
+        resultado_externo
+    )
+)
+
+print(
+    "Recordar Python desde conocimiento:",
+    conocimiento.recordar(
+        "Python"
+    )
+)
+
+print()
+print("Prueba de normalizacion de conocimiento:")
+
+conocimiento.guardar(
+    "Python",
+    "segunda descripcion",
+    "descripcion"
+)
+
+print(
+    "Recordar python:",
+    conocimiento.recordar(
+        "python"
+    )
+)
+
+print(
+    "Recordar PYTHON:",
+    conocimiento.recordar(
+        "PYTHON"
+    )
+)
+
+print(
+    "Recordar Python:",
+    conocimiento.recordar(
+        "Python"
+    )
+)
