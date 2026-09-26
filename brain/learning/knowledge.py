@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 
 class Knowledge:
@@ -61,6 +62,95 @@ class Knowledge:
                 indent=4,
                 ensure_ascii=False
             )
+
+    def agregar_fuente(
+        self,
+        clave,
+        tipo,
+        url=None
+    ):
+
+        clave = self._normalizar_clave(
+            clave
+        )
+
+        if not clave or not tipo:
+            return False
+
+        with open(self.archivo, "r", encoding="utf-8") as archivo:
+            conocimiento = json.load(archivo)
+
+        if clave not in conocimiento:
+            return False
+
+        if isinstance(conocimiento[clave], str):
+
+            conocimiento[clave] = {
+                "descripcion": conocimiento[clave]
+            }
+
+        if "fuentes" not in conocimiento[clave]:
+
+            conocimiento[clave]["fuentes"] = []
+
+        # --------------------------------
+        # CREAR FUENTE
+        # --------------------------------
+
+        fuente = {
+            "tipo": tipo,
+            "fecha": datetime.now().strftime(
+                "%Y-%m-%d"
+            )
+        }
+
+        if url:
+            fuente["url"] = url
+
+        # --------------------------------
+        # COMPROBAR FUENTE DUPLICADA
+        # --------------------------------
+
+        for fuente_existente in conocimiento[clave]["fuentes"]:
+
+            if tipo == "internet":
+
+                if (
+                    fuente_existente.get("tipo") == "internet"
+                    and fuente_existente.get("url") == url
+                ):
+
+                    return False
+
+            elif tipo == "usuario":
+
+                if fuente_existente.get("tipo") == "usuario":
+
+                    return False
+
+            else:
+
+                if fuente_existente == fuente:
+
+                    return False
+
+        # --------------------------------
+        # AGREGAR FUENTE
+        # --------------------------------
+
+        conocimiento[clave]["fuentes"].append(
+            fuente
+        )
+
+        with open(self.archivo, "w", encoding="utf-8") as archivo:
+            json.dump(
+                conocimiento,
+                archivo,
+                indent=4,
+                ensure_ascii=False
+            )
+
+        return True
 
     def recordar(self, clave, categoria="descripcion"):
 
