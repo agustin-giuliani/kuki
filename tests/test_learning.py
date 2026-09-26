@@ -108,7 +108,8 @@ resultado_externo = {
         "resultados": [
             {
                 "titulo": "Python",
-                "descripcion": "lenguaje de programacion de alto nivel"
+                "descripcion": "lenguaje de programacion de alto nivel",
+                "url": "https://es.wikipedia.org/wiki/Python"
             }
         ]
     }
@@ -160,3 +161,13 @@ print(
         "Python"
     )
 )
+print()
+print("Fuente registrada:")
+
+with open(
+    "data/test_knowledge.json",
+    "r",
+    encoding="utf-8"
+) as archivo:
+
+    print(archivo.read())
