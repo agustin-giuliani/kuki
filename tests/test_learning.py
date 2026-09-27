@@ -1,7 +1,24 @@
+import os
+
 from brain.learning.learner import Learning
 from brain.learning.memory import Memory
 from brain.learning.knowledge import Knowledge
 
+
+# --------------------------------
+# LIMPIAR ARCHIVOS DE PRUEBA
+# --------------------------------
+
+if os.path.exists("data/test_memory.json"):
+    os.remove("data/test_memory.json")
+
+if os.path.exists("data/test_knowledge.json"):
+    os.remove("data/test_knowledge.json")
+
+
+# --------------------------------
+# CREAR COMPONENTES DE PRUEBA
+# --------------------------------
 
 memoria = Memory(
     "data/test_memory.json"
@@ -19,6 +36,10 @@ learning = Learning(
 
 print("--- LEARNING ---")
 
+
+# --------------------------------
+# APRENDIZAJE DE MEMORIA
+# --------------------------------
 
 resultado_memoria = {
     "intencion": "aprendizaje_memoria",
@@ -46,6 +67,10 @@ print(
 )
 
 
+# --------------------------------
+# APRENDIZAJE DEL NOMBRE
+# --------------------------------
+
 resultado_nombre = {
     "intencion": "aprendizaje_memoria",
     "tipo": "nombre",
@@ -72,6 +97,10 @@ print(
 )
 
 
+# --------------------------------
+# APRENDIZAJE DE CONOCIMIENTO
+# --------------------------------
+
 resultado_conocimiento = {
     "intencion": "aprendizaje_conocimiento",
     "tipo": "conocimiento",
@@ -97,8 +126,39 @@ print(
     )
 )
 
+
 # --------------------------------
-# APRENDIZAJE EXTERNO
+# CONOCIMIENTO EXISTENTE
+# --------------------------------
+
+resultado_conocimiento_existente = {
+    "intencion": "aprendizaje_conocimiento",
+    "tipo": "conocimiento",
+    "clave": "Python",
+    "valor": "un lenguaje de programacion de alto nivel",
+    "texto": "Python es un lenguaje de programacion de alto nivel"
+}
+
+
+print()
+print("Aprender conocimiento existente:")
+
+print(
+    learning.aprender(
+        resultado_conocimiento_existente
+    )
+)
+
+print(
+    "Descripcion despues:",
+    conocimiento.recordar(
+        "python"
+    )
+)
+
+
+# --------------------------------
+# APRENDIZAJE DESDE INTERNET
 # --------------------------------
 
 resultado_externo = {
@@ -132,37 +192,13 @@ print(
     )
 )
 
+
+# --------------------------------
+# MOSTRAR ARCHIVO DE PRUEBA
+# --------------------------------
+
 print()
-print("Prueba de normalizacion de conocimiento:")
-
-conocimiento.guardar(
-    "Python",
-    "segunda descripcion",
-    "descripcion"
-)
-
-print(
-    "Recordar python:",
-    conocimiento.recordar(
-        "python"
-    )
-)
-
-print(
-    "Recordar PYTHON:",
-    conocimiento.recordar(
-        "PYTHON"
-    )
-)
-
-print(
-    "Recordar Python:",
-    conocimiento.recordar(
-        "Python"
-    )
-)
-print()
-print("Fuente registrada:")
+print("Estado final del conocimiento:")
 
 with open(
     "data/test_knowledge.json",
@@ -170,4 +206,6 @@ with open(
     encoding="utf-8"
 ) as archivo:
 
-    print(archivo.read())
+    print(
+        archivo.read()
+    )

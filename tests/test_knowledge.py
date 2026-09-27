@@ -89,3 +89,25 @@ print(
         "https://otro-sitio.com/python"
     )
 )
+print()
+print("Prueba de existencia:")
+
+print(
+    "Existe Python:",
+    knowledge.existe("Python")
+)
+
+print(
+    "Existe python:",
+    knowledge.existe("python")
+)
+
+print(
+    "Existe PYTHON:",
+    knowledge.existe("PYTHON")
+)
+
+print(
+    "Existe Java:",
+    knowledge.existe("Java")
+)

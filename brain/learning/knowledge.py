@@ -63,6 +63,26 @@ class Knowledge:
                 ensure_ascii=False
             )
 
+    def existe(self, clave):
+
+        clave = self._normalizar_clave(
+            clave
+        )
+
+        if not clave:
+            return False
+
+        with open(
+            self.archivo,
+            "r",
+            encoding="utf-8"
+        ) as archivo:
+
+            conocimiento = json.load(archivo)
+
+        return clave in conocimiento
+
+
     def agregar_fuente(
         self,
         clave,

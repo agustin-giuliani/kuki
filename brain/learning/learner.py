@@ -43,6 +43,10 @@ class Learning:
 
         return None
 
+    # --------------------------------
+    # APRENDER MEMORIA
+    # --------------------------------
+
     def _aprender_memoria(self, resultado):
 
         clave = resultado.get(
@@ -63,6 +67,10 @@ class Learning:
 
         return "memoria"
 
+    # --------------------------------
+    # APRENDER CONOCIMIENTO
+    # --------------------------------
+
     def _aprender_conocimiento(self, resultado):
 
         clave = resultado.get(
@@ -76,6 +84,20 @@ class Learning:
         if not clave or not valor:
             return None
 
+        # --------------------------------
+        # COMPROBAR SI YA EXISTE
+        # --------------------------------
+
+        if self.conocimiento.existe(
+            clave
+        ):
+
+            return "conocimiento_existente"
+
+        # --------------------------------
+        # GUARDAR NUEVO CONOCIMIENTO
+        # --------------------------------
+
         self.conocimiento.guardar(
             clave,
             valor,
@@ -83,6 +105,10 @@ class Learning:
         )
 
         return "conocimiento"
+
+    # --------------------------------
+    # APRENDER DESDE UNA FRASE
+    # --------------------------------
 
     def aprender_frase(self, texto):
 
@@ -163,11 +189,19 @@ class Learning:
 
         return "conocimiento"
 
+    # --------------------------------
+    # RECORDAR MEMORIA
+    # --------------------------------
+
     def recordar_memoria(self, clave):
 
         return self.memoria.recordar(
             clave
         )
+
+    # --------------------------------
+    # RECORDAR CONOCIMIENTO
+    # --------------------------------
 
     def recordar_conocimiento(
         self,
@@ -185,18 +219,23 @@ class Learning:
     # --------------------------------
 
     def aprender_externo(self, resultado_tool):
+
         if not resultado_tool:
             return None
 
         if resultado_tool.get("estado") != "ok":
             return None
 
-        resultado = resultado_tool.get("resultado")
+        resultado = resultado_tool.get(
+            "resultado"
+        )
 
         if not resultado:
             return None
 
-        resultados = resultado.get("resultados")
+        resultados = resultado.get(
+            "resultados"
+        )
 
         if not resultados:
             return None
@@ -206,9 +245,17 @@ class Learning:
         if not primer_resultado:
             return None
 
-        clave = primer_resultado.get("titulo")
-        descripcion = primer_resultado.get("descripcion")
-        url = primer_resultado.get("url")
+        clave = primer_resultado.get(
+            "titulo"
+        )
+
+        descripcion = primer_resultado.get(
+            "descripcion"
+        )
+
+        url = primer_resultado.get(
+            "url"
+        )
 
         if not clave or not descripcion:
             return None
