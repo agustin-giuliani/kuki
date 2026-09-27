@@ -3,6 +3,7 @@ import os
 from brain.learning.learner import Learning
 from brain.learning.memory import Memory
 from brain.learning.knowledge import Knowledge
+from brain.learning.pending_knowledge import PendingKnowledge
 
 
 # --------------------------------
@@ -14,6 +15,9 @@ if os.path.exists("data/test_memory.json"):
 
 if os.path.exists("data/test_knowledge.json"):
     os.remove("data/test_knowledge.json")
+
+if os.path.exists("data/test_pending_knowledge.json"):
+    os.remove("data/test_pending_knowledge.json")
 
 
 # --------------------------------
@@ -28,11 +32,15 @@ conocimiento = Knowledge(
     "data/test_knowledge.json"
 )
 
-learning = Learning(
-    memoria,
-    conocimiento
+pending_knowledge = PendingKnowledge(
+    "data/test_pending_knowledge.json"
 )
 
+learning = Learning(
+    memoria,
+    conocimiento,
+    pending_knowledge
+)
 
 print("--- LEARNING ---")
 
@@ -222,6 +230,47 @@ print(
     )
 )
 
+print(
+    "Recordar Python desde pendientes:",
+    pending_knowledge.obtener(
+        "Python"
+    )
+)
+
+# --------------------------------
+# MISMA INFORMACION DESDE OTRA FUENTE
+# --------------------------------
+
+resultado_externo_2 = {
+    "estado": "ok",
+    "resultado": {
+        "consulta": "python",
+        "resultados": [
+            {
+                "titulo": "Python",
+                "descripcion": "lenguaje de programacion de alto nivel",
+                "url": "https://github.com/ejemplo/python"
+            }
+        ]
+    }
+}
+
+
+print()
+print("Misma informacion desde otra fuente:")
+
+print(
+    learning.aprender_externo(
+        resultado_externo_2
+    )
+)
+
+print(
+    "Pendientes despues de segunda fuente:",
+    pending_knowledge.obtener(
+        "Python"
+    )
+)
 
 # --------------------------------
 # MOSTRAR ARCHIVO DE PRUEBA

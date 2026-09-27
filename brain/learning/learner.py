@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-
+from brain.learning.pending_knowledge import PendingKnowledge
 
 class Learning:
 
-    def __init__(self, memoria, conocimiento):
+    def __init__(self, memoria, conocimiento,pending_knowledge):
 
         self.memoria = memoria
         self.conocimiento = conocimiento
+        self.pending_knowledge = pending_knowledge
 
     def aprender(self, resultado):
 
@@ -312,16 +313,32 @@ class Learning:
         if not clave or not descripcion:
             return None
 
-        self.conocimiento.guardar(
+        # --------------------------------
+        # EVALUAR CONOCIMIENTO EXISTENTE
+        # --------------------------------
+
+        evaluacion = self._evaluar_conocimiento(
             clave,
-            descripcion,
-            "descripcion"
+            descripcion
         )
 
-        self.conocimiento.agregar_fuente(
+        # --------------------------------
+        # CONOCIMIENTO YA CONOCIDO
+        # --------------------------------
+
+        if evaluacion == "conocimiento_igual":
+
+            return "conocimiento_igual"
+
+        # --------------------------------
+        # INFORMACION NUEVA O DIFERENTE
+        # --------------------------------
+
+        self.pending_knowledge.guardar(
             clave,
+            descripcion,
             "internet",
             url
         )
 
-        return "conocimiento"
+        return "pendiente"
