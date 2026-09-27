@@ -15,6 +15,7 @@ data/conversation.json
 data/test_knowledge.json
 data/test_memory.json
 data/test_context_conversation.json
+data/pending_knowledge.json
 
 # Variables de entorno / archivos personales
 .env
