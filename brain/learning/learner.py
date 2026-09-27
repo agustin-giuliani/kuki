@@ -85,6 +85,42 @@ class Learning:
             return None
 
         # --------------------------------
+        # EVALUAR CONOCIMIENTO
+        # --------------------------------
+
+        evaluacion = self._evaluar_conocimiento(
+            clave,
+            valor
+        )
+
+        # --------------------------------
+        # GUARDAR CONOCIMIENTO NUEVO
+        # --------------------------------
+
+        if evaluacion == "conocimiento":
+
+            self.conocimiento.guardar(
+                clave,
+                valor,
+                "descripcion"
+            )
+
+        return evaluacion
+
+    # --------------------------------
+    # EVALUAR CONOCIMIENTO
+    # --------------------------------
+
+    def _evaluar_conocimiento(
+        self,
+        clave,
+        valor
+    ):
+
+        if not clave or not valor:
+            return None
+
+        # --------------------------------
         # OBTENER CONOCIMIENTO EXISTENTE
         # --------------------------------
 
@@ -98,21 +134,19 @@ class Learning:
 
         if conocimiento_existente is None:
 
-            self.conocimiento.guardar(
-                clave,
-                valor,
-                "descripcion"
-            )
-
             return "conocimiento"
 
         # --------------------------------
-        # COMPARAR DESCRIPCION
+        # OBTENER DESCRIPCION EXISTENTE
         # --------------------------------
 
         descripcion_existente = conocimiento_existente.get(
             "descripcion"
         )
+
+        # --------------------------------
+        # CONOCIMIENTO IGUAL
+        # --------------------------------
 
         if descripcion_existente == valor:
 
