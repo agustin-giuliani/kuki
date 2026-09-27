@@ -85,26 +85,44 @@ class Learning:
             return None
 
         # --------------------------------
-        # COMPROBAR SI YA EXISTE
+        # OBTENER CONOCIMIENTO EXISTENTE
         # --------------------------------
 
-        if self.conocimiento.existe(
+        conocimiento_existente = self.conocimiento.obtener(
             clave
-        ):
-
-            return "conocimiento_existente"
+        )
 
         # --------------------------------
-        # GUARDAR NUEVO CONOCIMIENTO
+        # CONOCIMIENTO NUEVO
         # --------------------------------
 
-        self.conocimiento.guardar(
-            clave,
-            valor,
+        if conocimiento_existente is None:
+
+            self.conocimiento.guardar(
+                clave,
+                valor,
+                "descripcion"
+            )
+
+            return "conocimiento"
+
+        # --------------------------------
+        # COMPARAR DESCRIPCION
+        # --------------------------------
+
+        descripcion_existente = conocimiento_existente.get(
             "descripcion"
         )
 
-        return "conocimiento"
+        if descripcion_existente == valor:
+
+            return "conocimiento_igual"
+
+        # --------------------------------
+        # INFORMACION DIFERENTE
+        # --------------------------------
+
+        return "conocimiento_nuevo_dato"
 
     # --------------------------------
     # APRENDER DESDE UNA FRASE

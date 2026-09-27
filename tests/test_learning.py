@@ -158,6 +158,36 @@ print(
 
 
 # --------------------------------
+# CONOCIMIENTO IGUAL
+# --------------------------------
+
+resultado_conocimiento_igual = {
+    "intencion": "aprendizaje_conocimiento",
+    "tipo": "conocimiento",
+    "clave": "Python",
+    "valor": "un lenguaje de programacion",
+    "texto": "Python es un lenguaje de programacion"
+}
+
+
+print()
+print("Aprender conocimiento igual:")
+
+print(
+    learning.aprender(
+        resultado_conocimiento_igual
+    )
+)
+
+print(
+    "Descripcion despues:",
+    conocimiento.recordar(
+        "python"
+    )
+)
+
+
+# --------------------------------
 # APRENDIZAJE DESDE INTERNET
 # --------------------------------
 

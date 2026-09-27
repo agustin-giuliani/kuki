@@ -194,3 +194,34 @@ class Knowledge:
             return dato
 
         return dato.get(categoria)
+
+    def obtener(self, clave):
+
+        clave = self._normalizar_clave(
+            clave
+        )
+
+        if not clave:
+            return None
+
+        with open(
+            self.archivo,
+            "r",
+            encoding="utf-8"
+        ) as archivo:
+
+            conocimiento = json.load(
+                archivo
+            )
+
+        if clave not in conocimiento:
+            return None
+
+        dato = conocimiento[clave]
+
+        if isinstance(dato, str):
+            return {
+                "descripcion": dato
+            }
+
+        return dato
