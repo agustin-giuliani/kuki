@@ -104,6 +104,60 @@ class ResponseGenerator:
                 + "."
             )
 
+        # --------------------------------
+        # VALIDAR CONOCIMIENTO
+        # --------------------------------
+        
+        elif intencion == "validar_conocimiento":
+
+            # Obtenemos la clave del conocimiento
+            # que el usuario quiere validar.
+            clave = datos.get(
+                "clave"
+            )
+
+            # Comprobamos si Learning encontró
+            # información pendiente para esa clave.
+            conocimiento_pendiente = datos.get(
+                "conocimiento_pendiente"
+            )
+
+            # Si no existe información pendiente,
+            # no podemos realizar la validación.
+            if not conocimiento_pendiente:
+
+                return (
+                    "No tengo conocimiento pendiente para validar "
+                    "sobre "
+                    + str(clave)
+                    + "."
+                )
+
+            # Obtenemos el resultado que devolvió
+            # Learning después de intentar validar.
+            resultado_validacion = datos.get(
+                "resultado_validacion"
+            )
+
+            # Si Learning confirmó la integración,
+            # informamos al usuario que el conocimiento
+            # pasó de pendiente a conocimiento consolidado.
+            if resultado_validacion == "conocimiento_validado":
+
+                return (
+                    "Listo. El conocimiento sobre "
+                    + str(clave)
+                    + " fue validado y agregado a mi conocimiento."
+                )
+
+            # Si algo falló durante el proceso,
+            # mostramos una respuesta de error.
+            return (
+                "No pude validar el conocimiento sobre "
+                + str(clave)
+                + "."
+            )
+
         elif intencion == "usar_herramienta":
 
             if datos.get("herramienta_no_encontrada"):

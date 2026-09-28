@@ -256,6 +256,53 @@ class LanguageProcessor:
                     )
 
         # -------------------------
+        # VALIDAR CONOCIMIENTO
+        # -------------------------
+
+        # Estas frases indican que el usuario quiere tomar
+        # un conocimiento que está pendiente y convertirlo
+        # en conocimiento consolidado.
+        patrones_validacion = [
+            "valida lo aprendido sobre ",
+            "validar lo aprendido sobre ",
+            "valida lo aprendido acerca de ",
+            "validar lo aprendido acerca de ",
+            "valida el conocimiento sobre ",
+            "validar el conocimiento sobre ",
+            "valida el conocimiento acerca de ",
+            "validar el conocimiento acerca de "
+        ]
+
+        # Revisamos cada patrón posible.
+        for patron in patrones_validacion:
+
+            # Comprobamos si el mensaje comienza con ese patrón.
+            if texto.startswith(patron):
+
+                # Extraemos el concepto que queremos validar.
+                clave = texto[
+                    len(patron):
+                ].strip()
+
+                # Eliminamos signos de interrogación si existieran.
+                clave = clave.rstrip("?")
+
+                # Solo generamos la intención si encontramos
+                # una clave válida.
+                if clave:
+
+                    # Devolvemos una intención estructurada.
+                    #
+                    # Learning/Kuki no tendrán que interpretar
+                    # nuevamente el lenguaje del usuario.
+                    return self.crear_resultado(
+                        "validar_conocimiento",
+                        texto,
+                        analisis_variantes,
+                        clave=clave
+                    )
+
+        # -------------------------
         # CONOCIMIENTO
         # -------------------------
 

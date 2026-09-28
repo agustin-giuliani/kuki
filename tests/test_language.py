@@ -283,3 +283,16 @@ print(
         "categoria_memoria"
     )
 )
+# --------------------------------
+# VALIDAR CONOCIMIENTO
+# --------------------------------
+
+# Probamos que LanguageProcessor reconozca
+# la intención de validar un conocimiento pendiente.
+print("\nValidar conocimiento:")
+
+resultado_validacion = lenguaje.procesar(
+    "valida lo aprendido sobre python"
+)
+
+print(resultado_validacion)

@@ -294,6 +294,71 @@ class Kuki:
 
             respuesta = "Lo aprendere."
 
+        # --------------------------------
+        # VALIDAR CONOCIMIENTO
+        # --------------------------------
+
+        elif intencion == "validar_conocimiento":
+
+            # Obtenemos la clave del conocimiento que
+            # el usuario quiere validar.
+            clave = resultado.get(
+                "clave"
+            )
+
+            # Buscamos las afirmaciones pendientes
+            # relacionadas con esa clave.
+            pendientes = self.pending_knowledge.obtener(
+                clave
+            )
+
+            # Si no hay conocimiento pendiente,
+            # informamos esa situación al generador
+            # de respuestas.
+            if not pendientes:
+
+                datos["clave"] = clave
+                datos["conocimiento_pendiente"] = False
+
+            else:
+
+                # Por ahora tomamos la primera afirmación
+                # pendiente encontrada para esa clave.
+                #
+                # Más adelante podremos permitir que KUKI
+                # gestione varias afirmaciones y fuentes.
+                pendiente = pendientes[0]
+
+                # Extraemos el contenido que vamos a validar.
+                valor = pendiente.get(
+                    "valor"
+                )
+
+                # Le pedimos a Learning que integre
+                # el conocimiento y retire la afirmación
+                # de PendingKnowledge.
+                resultado_validacion = (
+                    self.aprendizaje.validar_conocimiento(
+                        clave,
+                        valor
+                    )
+                )
+
+                # Guardamos los datos necesarios para
+                # ResponseGenerator.
+                datos["clave"] = clave
+                datos["valor"] = valor
+                datos["resultado_validacion"] = (
+                    resultado_validacion
+                )
+                datos["conocimiento_pendiente"] = True
+
+            # Generamos la respuesta final de KUKI.
+            respuesta = self.respuestas.generar(
+                intencion,
+                datos
+            )
+
         # --------------------------------------------------
         # 6. HERRAMIENTAS
         # --------------------------------------------------
