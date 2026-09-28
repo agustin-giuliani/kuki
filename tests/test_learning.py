@@ -1,15 +1,22 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 from brain.learning.learner import Learning
 from brain.learning.memory import Memory
 from brain.learning.knowledge import Knowledge
 from brain.learning.pending_knowledge import PendingKnowledge
+from brain.learning.knowledge_integrator import KnowledgeIntegrator
+from brain.learning.memory_integrator import MemoryIntegrator
 
 
 # --------------------------------
 # LIMPIAR ARCHIVOS DE PRUEBA
 # --------------------------------
 
+# Eliminamos los archivos utilizados por
+# las pruebas anteriores para empezar
+# siempre desde un estado limpio.
 if os.path.exists("data/test_memory.json"):
     os.remove("data/test_memory.json")
 
@@ -24,23 +31,52 @@ if os.path.exists("data/test_pending_knowledge.json"):
 # CREAR COMPONENTES DE PRUEBA
 # --------------------------------
 
+# Memory se encarga del almacenamiento
+# de los recuerdos.
 memoria = Memory(
     "data/test_memory.json"
 )
 
+# Knowledge se encarga del almacenamiento
+# del conocimiento general.
 conocimiento = Knowledge(
     "data/test_knowledge.json"
 )
 
+# PendingKnowledge almacena información
+# externa que todavía no fue validada.
 pending_knowledge = PendingKnowledge(
     "data/test_pending_knowledge.json"
 )
 
+# KnowledgeIntegrator decide cómo integrar
+# nueva información al conocimiento existente.
+knowledge_integrator = KnowledgeIntegrator(
+    conocimiento
+)
+
+# MemoryIntegrator decide cómo organizar
+# la información personal antes de guardarla.
+memory_integrator = MemoryIntegrator(
+    memoria
+)
+
+# Learning ahora recibe ambos integradores:
+#
+# MemoryIntegrator -> memoria
+# KnowledgeIntegrator -> conocimiento
+#
+# De esta forma Learning coordina el aprendizaje
+# pero no necesita conocer los detalles
+# de cómo se almacena cada tipo de información.
 learning = Learning(
     memoria,
     conocimiento,
-    pending_knowledge
+    pending_knowledge,
+    knowledge_integrator,
+    memory_integrator
 )
+
 
 print("--- LEARNING ---")
 
@@ -104,6 +140,39 @@ print(
     )
 )
 
+# --------------------------------
+# RECORDAR MEMORIA MEDIANTE LEARNING
+# --------------------------------
+
+print()
+print("Recordar color mediante Learning:")
+
+print(
+    learning.recordar_memoria(
+        "color favorito"
+    )
+)
+
+
+print()
+print("Recordar nombre mediante Learning:")
+
+print(
+    learning.recordar_memoria(
+        "nombre"
+    )
+)
+
+
+print()
+print("Recordar campo especifico:")
+
+print(
+    learning.recordar_memoria(
+        "nombre",
+        "categoria"
+    )
+)
 
 # --------------------------------
 # APRENDIZAJE DE CONOCIMIENTO
@@ -237,6 +306,7 @@ print(
     )
 )
 
+
 # --------------------------------
 # MISMA INFORMACION DESDE OTRA FUENTE
 # --------------------------------
@@ -272,8 +342,58 @@ print(
     )
 )
 
+
 # --------------------------------
-# MOSTRAR ARCHIVO DE PRUEBA
+# VALIDAR CONOCIMIENTO PENDIENTE
+# --------------------------------
+
+print()
+print("Validar conocimiento pendiente:")
+
+print(
+    learning.validar_conocimiento(
+        "python",
+        "lenguaje de programacion de alto nivel"
+    )
+)
+
+
+print(
+    "Python despues de validar:",
+    conocimiento.recordar(
+        "Python"
+    )
+)
+
+
+print(
+    "Pendientes despues de validar:",
+    pending_knowledge.obtener(
+        "Python"
+    )
+)
+
+
+# --------------------------------
+# MOSTRAR ARCHIVO DE MEMORIA
+# --------------------------------
+
+print()
+print("Estado final de la memoria:")
+
+with open(
+    "data/test_memory.json",
+    "r",
+    encoding="utf-8"
+) as archivo:
+
+    print(
+        archivo.read()
+    )
+
+
+# --------------------------------
+# MOSTRAR ARCHIVO DE CONOCIMIENTO
 # --------------------------------
 
 print()

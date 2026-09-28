@@ -297,41 +297,76 @@ class LanguageProcessor:
         # APRENDIZAJE
         # -------------------------
 
+        # --------------------------------
+        # APRENDER NOMBRE
+        # --------------------------------
+
         if texto.startswith("me llamo "):
 
+            # Extraemos el nombre de la persona
+            # eliminando la expresión "me llamo".
             nombre = texto[9:].strip()
 
             if nombre:
 
+                # Generamos un resultado estructurado.
+                #
+                # "tipo" identifica qué clase de información
+                # detectó el lenguaje.
+                #
+                # "tipo_memoria" indica cómo debe almacenarse.
+                #
+                # "categoria_memoria" indica qué clase de
+                # recuerdo representa.
                 return {
                     "intencion": "aprendizaje_memoria",
                     "tipo": "nombre",
                     "clave": "nombre",
                     "valor": nombre,
+                    "tipo_memoria": "dato_unico",
+                    "categoria_memoria": "identidad",
                     "texto": texto
                 }
 
+        # --------------------------------
+        # APRENDER DATO PERSONAL
+        # --------------------------------
 
         if texto.startswith("mi ") and " es " in texto:
 
+            # Separamos la frase en:
+            #
+            # "mi color favorito"
+            #
+            # y:
+            #
+            # "negro"
             clave, valor = texto.split(
                 " es ",
                 1
             )
 
+            # Eliminamos "mi" de la clave.
             clave = clave[3:].strip()
+
+            # Limpiamos el valor y eliminamos
+            # un posible punto final.
             valor = valor.strip().rstrip(".")
 
             if clave and valor:
 
+                # Creamos un resultado estructurado
+                # para que Learning no tenga que adivinar
+                # cómo debe almacenarse esta información.
                 return {
                     "intencion": "aprendizaje_memoria",
                     "tipo": "dato_usuario",
                     "clave": clave,
                     "valor": valor,
+                    "tipo_memoria": "dato_unico",
+                    "categoria_memoria": "preferencia",
                     "texto": texto
                 }
-
 
         if " es " in texto and not texto.startswith("cual es "):
 

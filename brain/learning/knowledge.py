@@ -63,6 +63,45 @@ class Knowledge:
                 ensure_ascii=False
             )
 
+    def actualizar(self, clave, datos):
+
+        clave = self._normalizar_clave(
+            clave
+        )
+
+        if not clave or not isinstance(datos, dict):
+            return False
+
+        with open(
+            self.archivo,
+            "r",
+            encoding="utf-8"
+        ) as archivo:
+
+            conocimiento = json.load(
+                archivo
+            )
+
+        if clave not in conocimiento:
+            return False
+
+        conocimiento[clave] = datos
+
+        with open(
+            self.archivo,
+            "w",
+            encoding="utf-8"
+        ) as archivo:
+
+            json.dump(
+                conocimiento,
+                archivo,
+                indent=4,
+                ensure_ascii=False
+            )
+
+        return True
+
     def existe(self, clave):
 
         clave = self._normalizar_clave(

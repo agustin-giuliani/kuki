@@ -176,46 +176,110 @@ for entrada in pruebas_permisos:
         "->",
         resultado
     )
-
 print()
 print("--- DATOS DE APRENDIZAJE ---")
 
+
+# --------------------------------
+# DATO PERSONAL
+# --------------------------------
+
+# Procesamos una frase que contiene
+# información personal del usuario.
 resultado = lenguaje.procesar(
     "Mi color favorito es negro"
 )
 
+print()
+print("Mi color favorito es negro:")
 print(resultado)
 
+
+# Comprobamos qué tipo de memoria
+# detectó LanguageProcessor.
+print(
+    "Tipo de memoria:",
+    resultado.get(
+        "tipo_memoria"
+    )
+)
+
+
+# Comprobamos qué categoría asignó.
+print(
+    "Categoria de memoria:",
+    resultado.get(
+        "categoria_memoria"
+    )
+)
+
+
+# --------------------------------
+# NOMBRE DEL USUARIO
+# --------------------------------
+
+# Procesamos una frase que informa
+# el nombre del usuario.
 resultado = lenguaje.procesar(
     "Me llamo Agustin"
 )
 
+print()
+print("Me llamo Agustin:")
 print(resultado)
 
+
+# Comprobamos que el nombre sea tratado
+# como un dato único.
+print(
+    "Tipo de memoria:",
+    resultado.get(
+        "tipo_memoria"
+    )
+)
+
+
+# El nombre pertenece a la categoría
+# de identidad.
+print(
+    "Categoria de memoria:",
+    resultado.get(
+        "categoria_memoria"
+    )
+)
+
+
+# --------------------------------
+# CONOCIMIENTO GENERAL
+# --------------------------------
+
+# Esta frase no representa información
+# personal del usuario.
+#
+# Por eso debe continuar siendo
+# conocimiento general.
 resultado = lenguaje.procesar(
     "Python es un lenguaje de programacion"
 )
 
+print()
+print("Python es un lenguaje de programacion:")
 print(resultado)
 
-pruebas = [
-    "aprende de internet sobre python",
-    "aprende de internet como hacer un CRUD en C#",
-    "aprende en internet sobre blender",
 
-    "busca informacion sobre python",
-    "investiga sobre blender",
+# Comprobamos que NO haya sido clasificado
+# como memoria personal.
+print(
+    "Tipo de memoria:",
+    resultado.get(
+        "tipo_memoria"
+    )
+)
 
-    "que es python",
-]
 
-
-for texto in pruebas:
-
-    resultado = lenguaje.procesar(texto)
-
-    print()
-    print("=" * 60)
-    print("Entrada:", texto)
-    print("Intencion:", resultado["intencion"])
-    print("Resultado:", resultado)
+print(
+    "Categoria de memoria:",
+    resultado.get(
+        "categoria_memoria"
+    )
+)
